@@ -250,7 +250,6 @@
       "headers": {
         "Location": "/docs/v2/advanced/platform/frequently-asked-questions#platform-version-detection"
       }
-    },
-    { "src": "(.*)", "dest": "$1" }
+    }
   ]
 }
