@@ -11,7 +11,7 @@ export const meta = {
   description:
     'Configuring ZEIT Now so that your deployments are exactly as you need them.',
   editUrl: 'pages/docs/v2/advanced/configuration.mdx',
-  lastEdited: '2019-08-22T10:47:21.000Z'
+  lastEdited: '2019-08-27T11:42:11.000Z'
 }
 
 When using [Now CLI](/download), [Now for GitHub](/docs/v2/getting-started/installation#now-for-github) or [Now for GitLab](/docs/v2/getting-started/installation#now-for-gitlab), the configuration for your deployment is read from the `now.json` file.
@@ -354,6 +354,30 @@ When set to false, [Now for GitHub](/docs/v2/integrations/now-for-github) will a
   }
 }`}</Code>
 </Example>
+
+### Reserved Variables
+
+The following environment variable names are [reserved](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html#lambda-environment-variables) and therefore unavailable for use:
+
+- `AWS_REGION`
+- `AWS_DEFAULT_REGION`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_KEY`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_EXECUTION_ENV`
+- `AWS_LAMBDA_LOG_GROUP_NAME`
+- `AWS_LAMBDA_LOG_STREAM_NAME`
+- `AWS_LAMBDA_FUNCTION_NAME`
+- `AWS_LAMBDA_FUNCTION_MEMORY_SIZE`
+- `AWS_LAMBDA_FUNCTION_VERSION`
+- `AWS_SESSION_TOKEN`
+- `NOW_REGION`
+- `TZ`
+- `_HANDLER`
+- `LAMBDA_TASK_ROOT`
+- `LAMBDA_RUNTIME_DIR`
+
+Using either, or any, of these environment variables, will result in the deployment failing.
 
 ---
 

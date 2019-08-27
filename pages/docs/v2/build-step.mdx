@@ -18,14 +18,14 @@ export const meta = {
   title: 'Build Step',
   description: 'Providing ZEIT Now with a build step.',
   editUrl: 'pages/docs/v2/build-step.mdx',
-  lastEdited: '2019-08-22T10:47:21.000Z'
+  lastEdited: '2019-08-27T12:11:14.000Z'
 }
 
 When you make a deployment with ZEIT Now, the first step is the build step. Now recognizes a custom `build` script, with that build script outputting your app into the `public` directory.
 
 Now also supports optimized frameworks that only need to be created and then they are ready to deploy with [Now CLI](/download) from the terminal.
 
-You are also able to use [Environment Variables](#using-environment-variables-and-secrets) (including secrets) in your builds if you do not want to hardcode values for the build.
+You are also able to use [environment variables](#using-environment-variables-and-secrets) (including secrets) in your builds if you do not want to hardcode values for the build.
 
 ## Optimized Frameworks
 
@@ -68,6 +68,20 @@ For example, to build Next.js fresh, each time you deploy, the following `build`
 </Caption>
 
 ## Using Environment Variables and Secrets
+
+When building your project, it may be necessary to use [environment variables](https://en.wikipedia.org/wiki/Environment_variable).
+
+Adding environment variables requires two steps, defining the environment variable, then making it available to your projects' build step.
+
+<Note>
+  This section covers how to make environment variables available at{' '}
+  <b>Build Time</b>, if you would like to make them available during{' '}
+  <b>Run Time</b>, please see the{' '}
+  <GenericLink href="/docs/v2/serverless-functions/env-and-secrets/">
+    Serverless Functions documentation
+  </GenericLink>
+  .
+</Note>
 
 ### Adding Secrets
 
@@ -120,6 +134,10 @@ process.env.VARIABLE_NAME
 </Caption>
 
 Now, whenever the `process.env.VARIABLE_NAME` key is used, it will provide the application's build step with the value declared by the referenced **Now Secret**.
+
+### Reserved Variables
+
+The ZEIT Now platform reserves the usage of some environment variable names by default. You can find a list of these names in the [configuration documentation](/docs/v2/advanced/configuration/#reserved-variables).
 
 ## Ignored Files and Folders
 

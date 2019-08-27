@@ -1,5 +1,5 @@
 const Caption = ({ children, ...props }) => (
-  <p {...props}>
+  <p {...props} className="caption">
     {children}
     <style jsx>
       {`

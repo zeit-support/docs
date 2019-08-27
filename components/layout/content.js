@@ -10,9 +10,9 @@ const getContent = (zenModeActive, children) => {
           display: flex;
           flex-direction: column;
           flex: 0 0 100%;
-          max-width: calc(100% - 280px);
           padding-bottom: 64px;
           padding-left: 24px;
+          max-width: calc(100% - 280px);
           margin-left: auto;
         }
 

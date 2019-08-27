@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { useAmp } from 'next/amp'
 import PropTypes from 'prop-types'
 import IObserver from '~/components/intersection-observer'
+import cn from 'classnames'
 
 import VideoComponent from './video'
 
@@ -60,7 +61,8 @@ class Image extends Component {
       captionSpacing = null,
       oversize = false,
       borderRadius = false,
-      children
+      children,
+      shadow
     } = this.props
 
     const aspectRatio = String((height / width) * 100) + '%'
@@ -78,7 +80,7 @@ class Image extends Component {
           rootMargin="20%"
           disabled={!lazy}
         >
-          <figure className={classes}>
+          <figure className={cn(classes, { 'has-shadow': shadow })}>
             <main style={{ width }}>
               <div className="container" style={{ paddingBottom: aspectRatio }}>
                 {this.state.src ? (
@@ -99,7 +101,6 @@ class Image extends Component {
               figure {
                 display: block;
                 text-align: center;
-                margin: ${margin}px 0;
               }
 
               main {
@@ -117,7 +118,6 @@ class Image extends Component {
                 position: absolute;
                 top: 0;
                 width: 100%;
-                ${borderRadius ? `border-radius: 5px;` : ''};
               }
 
               .container {
@@ -130,6 +130,20 @@ class Image extends Component {
                 font-size: 12px;
                 margin: 0;
                 text-align: center;
+              }
+
+              .has-shadow + :global(.caption) {
+                margin: 0 0 40px;
+              }
+            `}</style>
+            <style jsx>{`
+              figure {
+                margin: ${margin}px 0;
+              }
+
+              img {
+                ${borderRadius || shadow ? `border-radius: 5px;` : ''};
+                ${shadow ? `box-shadow: var(--shadow-large)` : ''};
               }
 
               @media (min-width: 992px) {
