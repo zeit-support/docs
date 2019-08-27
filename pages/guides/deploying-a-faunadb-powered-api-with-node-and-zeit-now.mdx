@@ -20,18 +20,16 @@ export const meta = {
   }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/card.png`,
   editUrl:
     'pages/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now.mdx',
-  lastEdited: '2019-08-27T13:13:42.000Z'
+  lastEdited: '2019-08-27T13:39:59.000Z'
 }
 
-[FaunaDB](https://fauna.com/) is a serverless cloud database that lets you store your app data with zero provisioning, global low-latency and confidence.
+[FaunaDB](https://fauna.com/) is a serverless cloud database that gives you ubiquitous, low latency access to app data, without sacrificing data correctness.
 
 This guide walks you through making a FaunaDB account, creating a sample database, and then connecting to it using a Serverless Function deployed with [ZEIT Now](/now).
 
 ## Step 1: Connecting to FaunaDB
 
-To start this example, you need to have [created a FaunaDB account](https://dashboard.fauna.com/accounts/register).
-
-Once you have logged into your free account, create a child database named `zeit` _(names are case sensitive)_.
+To start this example, you need to have [created a FaunaDB account](https://dashboard.fauna.com/accounts/register). Once logged in to FaunaDB, create a child database named `zeit` _(names are case sensitive)_.
 
 <Image
   src={`${
@@ -45,7 +43,7 @@ Once you have logged into your free account, create a child database named `zeit
 
 After clicking **Save**, you will be taken to the **Database Overview** page.
 
-From here, the simplest way to create a demo schema with some data is to execute a _Fauna Query Language (FQL)_ script file from [the "Shell" in the side navigation bar](https://dashboard.fauna.com/webshell/@db/zeit).
+From here, the easiest way to create a demo schema with some data is to execute a _Fauna Query Language (FQL)_ script file.
 
 Select the **Shell** tab from the sidebar, copy in [this FQL script](https://raw.githubusercontent.com/danieltodonnell/faunadb-zeit-fql-demo/master/fql-scripts/ecommerce.fql) and click **Run Query**.
 
@@ -59,7 +57,7 @@ Select the **Shell** tab from the sidebar, copy in [this FQL script](https://raw
 />
 <Caption>Adding data to a FaunaDB database from the dashboard using a FQL script.</Caption>
 
-After executing the script, your **Collections** page will look like this, you are now ready to create a connection to the database.
+After executing the script, the **Collections** page will look like this, you are now ready to create a connection to the database.
 
 <Image
   src={`${
@@ -82,11 +80,11 @@ Go to the [**Security** page](https://dashboard.fauna.com/keys/@db/zeit) and cli
 
 Once entered, click the **Save** button, which will take you to the **Keys** page.
 
-On the **Keys** page, you will receive a unique hash called a **Secret**, in the same format as the image above. The **Secret** is your method of securely identifying yourself to your database.
+On the **Keys** page, you will receive a unique hash called a **Secret**. The **Secret** is your method of securely identifying yourself to the database.
 
 <Note warning>
   This is the only time you will see this hash, so record it somewhere private.
-  However, if you ever lose this hash, you can create another.
+  However, if the has is lost, a new one can be created.
 </Note>
 
 ## Step 3: API Setup
@@ -105,14 +103,14 @@ Next, [initialize](https://docs.npmjs.com/cli/init) the project:
   Initializing the project, this creates a <InlineCode>package.json</InlineCode>{' '}file.
 </Caption>
 
-Next, install [the FaunaDB Javascript client](https://github.com/fauna/faunadb-js), this helps you connect to and query your database:
+Next, install [the FaunaDB Javascript client](https://github.com/fauna/faunadb-js), this helps you connect to and query the database:
 
 <Snippet dark text="npm i faunadb" />
 <Caption>
   Adding the <InlineCode>faunadb</InlineCode> Node.js client as a <GenericLink href="https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file">dependency</GenericLink> to the project.
 </Caption>
 
-To connect, you need the secret that you saved earlier. To use your secret without hard-coding it into your project, you can add your connection string as a [Now Secret](https://zeit.co/docs/v2/deployments/environment-variables-and-secrets/#securing-environment-variables-using-secrets) using [Now CLI](https://zeit.co/download#now-cli) to keep it secure:
+To connect, you need the secret received earlier. To use the secret without hard-coding it into your project, add your connection string as a [Now Secret](https://zeit.co/docs/v2/deployments/environment-variables-and-secrets/#securing-environment-variables-using-secrets) using [Now CLI](https://zeit.co/download#now-cli) to keep it secure:
 
 <Snippet dark text="now secrets add faunadb_secret_key YourFaunaDBSecret" />
 <Caption>
@@ -192,20 +190,20 @@ module.exports = async (req, res) => {
 
 ## Step 5: Deploying
 
-With your project complete, you are ready to deploy it with [ZEIT Now](/now).
+With the project complete, you are ready to deploy it with [ZEIT Now](/now).
 
 If you have not yet installed Now, you can do so by [installing Now CLI](/download).
 
-You can now deploy your project with **just a single command**:
+You can now deploy the project with **just a single command**:
 
 <Snippet dark text="now" />
 <Caption>
   Deploying the project with the <InlineCode>now</InlineCode> command.
 </Caption>
 
-You will shortly be given a deployment URL. With this, you can now access the contents of your FaunaDB database at the `/api` endpoint.
+You will shortly be given a deployment URL. With this, you can now access the contents of the FaunaDB database at the `/api` endpoint.
 
-If you want to deploy your Node.js + FaunaDB project from a Git repository, you can use either [Now for GitHub](/docs/v2/advanced/now-for-github/) or [Now for GitLab](/docs/v2/advanced/now-for-gitlab/) to have your project automatically deployed on every push, and aliased on push to master.
+To deploy your Node.js + FaunaDB project from a Git repository, you can use either [Now for GitHub](/docs/v2/advanced/now-for-github/) or [Now for GitLab](/docs/v2/advanced/now-for-gitlab/) to have your project automatically deployed on every push, and aliased on push to master.
 
 export default ({ children }) => <Guide meta={meta}>{children}</Guide>
 
