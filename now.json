@@ -92,7 +92,7 @@
       "src": "/docs/v2/(?:deployments|advanced)/builders/developer-guide(.*)",
       "status": 301,
       "headers": {
-        "Location": "https://github.com/zeit/now-builders/blob/canary/DEVELOPING_A_BUILDER.md"
+        "Location": "https://github.com/zeit/now/blob/canary/DEVELOPING_A_BUILDER.md"
       }
     },
     {
