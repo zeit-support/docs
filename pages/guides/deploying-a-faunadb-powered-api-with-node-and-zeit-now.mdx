@@ -20,17 +20,8 @@ export const meta = {
   }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/card.png`,
   editUrl:
     'pages/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now.mdx',
-  lastEdited: '2019-08-27T10:47:51.000Z'
+  lastEdited: '2019-08-27T13:13:42.000Z'
 }
-
-<Image
-  src={`${
-    process.env.ASSETS
-  }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/card.png`}
-  width={1200 / 1.45}
-  height={628 / 1.45}
-  oversize
-/>
 
 [FaunaDB](https://fauna.com/) is a serverless cloud database that lets you store your app data with zero provisioning, global low-latency and confidence.
 
@@ -39,16 +30,6 @@ This guide walks you through making a FaunaDB account, creating a sample databas
 ## Step 1: Connecting to FaunaDB
 
 To start this example, you need to have [created a FaunaDB account](https://dashboard.fauna.com/accounts/register).
-
-<Image
-  src={`${
-    process.env.ASSETS
-  }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/fauna-register.png`}
-  width={2048 / 2.5}
-  height={1568 / 2.5}
-  oversize
-/>
-<Caption>The FaunaDB login page.</Caption>
 
 Once you have logged into your free account, create a child database named `zeit` _(names are case sensitive)_.
 
@@ -63,16 +44,6 @@ Once you have logged into your free account, create a child database named `zeit
 <Caption>Creating a new database in the FaunaDB dashboard.</Caption>
 
 After clicking **Save**, you will be taken to the **Database Overview** page.
-
-<Image
-  src={`${
-    process.env.ASSETS
-  }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/fauna-zeit-db-home.png`}
-  width={2048 / 2.5}
-  height={1536 / 2.5}
-  oversize
-/>
-<Caption>The FaunaDB dashboard after creating a new database.</Caption>
 
 From here, the simplest way to create a demo schema with some data is to execute a _Fauna Query Language (FQL)_ script file from [the "Shell" in the side navigation bar](https://dashboard.fauna.com/webshell/@db/zeit).
 
@@ -110,16 +81,6 @@ Go to the [**Security** page](https://dashboard.fauna.com/keys/@db/zeit) and cli
 - Priority: `1`
 
 Once entered, click the **Save** button, which will take you to the **Keys** page.
-
-<Image
-  src={`${
-    process.env.ASSETS
-  }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/fauna-zeit-db-security.png`}
-  width={2048 / 2.5}
-  height={1536 / 2.5}
-  oversize
-/>
-<Caption>Viewing an <InlineCode>access key</InlineCode> on the FaunaDB dashboard.</Caption>
 
 On the **Keys** page, you will receive a unique hash called a **Secret**, in the same format as the image above. The **Secret** is your method of securely identifying yourself to your database.
 
