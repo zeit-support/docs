@@ -11,7 +11,7 @@ import { Code } from '~/components/code'
 export const meta = {
   title: 'Create and Deploy a FaunaDB-Powered Node.js API with ZEIT Now',
   description:
-    'Learn how to create a FaunaDB backed Node.js API and deploy it with ZEIT Now.',
+    'Create a FaunaDB-Powered Node.js API and deploy it with ZEIT Now.',
   published: '2019-08-27T17:00:00.000Z',
   authors: ['danieltodonnell', 'msweeneydev'],
   url: '/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now',
@@ -20,7 +20,7 @@ export const meta = {
   }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/card.png`,
   editUrl:
     'pages/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now.mdx',
-  lastEdited: '2019-08-26T17:15:55.000Z'
+  lastEdited: '2019-08-27T10:20:20.000Z'
 }
 
 <Image
@@ -183,14 +183,12 @@ Now, create a [`now.json` file](https://zeit.co/docs/v2/deployments/configuratio
 
 ## Step 4: Writing the Serverless Function
 
-It's time to create the Node.js API endpoint that will fetch the data from FaunaDB. Create an `/api` directory to put the Serverless Function in:
+It's time to create the Node.js API endpoint that will fetch the data from FaunaDB. Create an `/api` directory with an `index.js` file inside:
 
-<Snippet dark text="mkdir api && cd api" />
+<Snippet dark text="mkdir -p api/index.js && cd api" />
 <Caption>
-  Creating and entering into the <InlineCode>/api</InlineCode>{' '}directory.
+  Creating an <InlineCode>/api</InlineCode>{' '}directory with a <InlineCode>index.js</InlineCode> file inside.
 </Caption>
-
-For this example, create a file called `index.js` inside of the `/api` directory.
 
 The `index.js` file will act as the default endpoint for getting information from your database. The file should contain the following code:
 
@@ -243,6 +241,8 @@ You can now deploy your project with **just a single command**:
 <Caption>
   Deploying the project with the <InlineCode>now</InlineCode> command.
 </Caption>
+
+You will shortly be given a deployment URL. With this, you can now access the contents of your FaunaDB database at the `/api` endpoint.
 
 If you want to deploy your Node.js + FaunaDB project from a Git repository, you can use either [Now for GitHub](/docs/v2/advanced/now-for-github/) or [Now for GitLab](/docs/v2/advanced/now-for-gitlab/) to have your project automatically deployed on every push, and aliased on push to master.
 
