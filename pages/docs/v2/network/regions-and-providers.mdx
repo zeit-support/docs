@@ -5,7 +5,7 @@ export const meta = {
   description:
     'A listing and explanation of the regions and providers ZEIT Now implements.',
   editUrl: 'pages/docs/v2/network/regions-and-providers.mdx',
-  lastEdited: '2019-08-21T15:24:05.000Z'
+  lastEdited: '2019-08-27T08:44:34.000Z'
 }
 
 A typical server configuration might begin by selecting the region where the physical server is located. A local business would have no issue selecting the closest region to their store, but businesses with traffic spanning cities, countries, or even the entire globe might struggle to serve all their customers. This is where the ZEIT Smart CDN comes in.
@@ -16,7 +16,7 @@ When an application is deployed to ZEIT Now, it automatically serves static file
 
 ## Origin vs Edge Regions
 
-An Origin Region is a Region where content originates, whereas an Edge Region can _only_ serve cached or static content. An application should generally only deploy to the Origin Regions closest to the Regions where the data is stored. If an application doesn't need to fetch data, it would perform extremely well deployed globally using `--regions all`.
+An Origin Region is a Region where content originates, whereas an Edge Region can _only_ serve cached or static content. An application should generally only deploy to the Origin Regions closest to the Regions where the data is stored.
 
 ## Providers
 
