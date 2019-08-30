@@ -23,13 +23,13 @@ export const meta = {
   lastEdited: '2019-08-27T20:17:12.000Z'
 }
 
-[FaunaDB](https://fauna.com/) is a serverless cloud database that gives you ubiquitous, low latency access to app data, without sacrificing data correctness.
+[FaunaDB](https://fauna.com/) is a serverless cloud database that gives you low latency access to app data around the world.
 
-This guide walks you through making a FaunaDB account, creating a sample database, and then connecting to it using a Serverless Function deployed with [ZEIT Now](/now).
+This guide walks you through making a FaunaDB database and then connecting to it using a Serverless Function deployed with [ZEIT Now](/now).
 
 ## Step 1: Connecting to FaunaDB
 
-To start this example, you need to have [created a FaunaDB account](https://dashboard.fauna.com/accounts/register). Once logged in to FaunaDB, create a child database named `zeit` _(names are case sensitive)_.
+To start, you need to have [created a FaunaDB account](https://dashboard.fauna.com/accounts/register). Once logged in to FaunaDB, create a child database named `zeit` _(names are case sensitive)_.
 
 <Image
   src={`${
@@ -46,7 +46,7 @@ After clicking **Save**, you will be taken to the **Database Overview** page.
 
 From here, the easiest way to create a demo schema with some data is to execute a _Fauna Query Language (FQL)_ script file.
 
-Select the **Shell** tab from the sidebar, copy in [this FQL script](https://raw.githubusercontent.com/danieltodonnell/faunadb-zeit-fql-demo/master/fql-scripts/ecommerce.fql) and click **Run Query**.
+Select the **Shell** tab, then copy in [this FQL script](https://raw.githubusercontent.com/danieltodonnell/faunadb-zeit-fql-demo/master/fql-scripts/ecommerce.fql) and click **Run Query**.
 
 <Image
   src={`${
@@ -57,9 +57,9 @@ Select the **Shell** tab from the sidebar, copy in [this FQL script](https://raw
   oversize
   shadow
 />
-<Caption>Adding data to a FaunaDB database from the dashboard using a FQL script.</Caption>
+<Caption>Adding data to a FaunaDB database from the dashboard using an FQL script.</Caption>
 
-After executing the script, the **Collections** page will look like this, you are now ready to create a connection to the database.
+After executing the script, the **Collections** page will present you with dummy data. You are now ready to create a connection to the database.
 
 <Image
   src={`${
@@ -74,7 +74,7 @@ After executing the script, the **Collections** page will look like this, you ar
 
 ## Step 2: Create an Access Key
 
-Go to the [**Security** page](https://dashboard.fauna.com/keys/@db/zeit) and click the **New Key** button. Enter the following data in the fields:
+Go to the [**Security** page](https://dashboard.fauna.com/keys/@db/zeit) and create a new key. Enter the following data in the fields:
 
 - Database: `zeit`
 - Role: `Admin`
@@ -87,12 +87,12 @@ On the **Keys** page, you will receive a unique hash called a **Secret**. The **
 
 <Note warning>
   This is the only time you will see this hash, so record it somewhere private.
-  However, if the has is lost, a new one can be created.
+  However, if the hash is lost, a new one can be created.
 </Note>
 
 ## Step 3: API Setup
 
-Get started by creating a project directory and `cd` into it:
+Get started creating your API by making a project directory and moving into it:
 
 <Snippet dark text="mkdir faunadb-demo && cd faunadb-demo" />
 <Caption>
@@ -113,14 +113,14 @@ Next, install [the FaunaDB Javascript client](https://github.com/fauna/faunadb-j
   Adding the <InlineCode>faunadb</InlineCode> Node.js client as a <GenericLink href="https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file">dependency</GenericLink> to the project.
 </Caption>
 
-To connect, you need the secret received earlier. To use the secret without hard-coding it into your project, add your connection string as a [Now Secret](https://zeit.co/docs/v2/deployments/environment-variables-and-secrets/#securing-environment-variables-using-secrets) using [Now CLI](https://zeit.co/download#now-cli) to keep it secure:
+To connect, you need to use the secret obtained in [Step 2](#step-2:-create-an-access-key). To use the secret without hard-coding it into your project, add your connection string as a [Now Secret](https://zeit.co/docs/v2/deployments/environment-variables-and-secrets/#securing-environment-variables-using-secrets) using [Now CLI](https://zeit.co/download#now-cli) to keep it secure:
 
-<Snippet dark text="now secrets add faunadb_secret_key YourFaunaDBSecret" />
+<Snippet dark text="now secrets add faunadb_secret_key [Your FaunaDB Secret]" />
 <Caption>
   Adding an environment variable to the project as a <GenericLink href="/docs/v2/serverless-functions/env-and-secrets/#adding-secrets">Now Secret</GenericLink>.
 </Caption>
 
-Now, create a [`now.json` file](https://zeit.co/docs/v2/deployments/configuration/) that tells Now to make available the [Secret](https://zeit.co/docs/v2/deployments/environment-variables-and-secrets/#securing-environment-variables-using-secrets) that you defined:
+Create a [`now.json` file](https://zeit.co/docs/v2/deployments/configuration/) that tells Now to make available the [Secret](https://zeit.co/docs/v2/deployments/environment-variables-and-secrets/#securing-environment-variables-using-secrets) that you defined, to your project:
 
 ```json
 {
@@ -145,7 +145,7 @@ Now, create a [`now.json` file](https://zeit.co/docs/v2/deployments/configuratio
 
 ## Step 4: Writing the Serverless Function
 
-It's time to create the Node.js API endpoint that will fetch the data from FaunaDB. Create an `/api` directory with an `index.js` file inside:
+Create the Node.js API endpoint that will fetch the data from FaunaDB by making an `/api` directory with an `index.js` file inside:
 
 <Snippet dark text="mkdir -p api/index.js && cd api" />
 <Caption>
@@ -197,14 +197,14 @@ With the project complete, you are ready to deploy it with [ZEIT Now](/now).
 
 If you have not yet installed Now, you can do so by [installing Now CLI](/download).
 
-You can now deploy the project with **just a single command**:
+You can now deploy the project with **a single command**:
 
 <Snippet dark text="now" />
 <Caption>
   Deploying the project with the <InlineCode>now</InlineCode> command.
 </Caption>
 
-You will shortly be given a deployment URL. With this, you can now access the contents of the FaunaDB database at the `/api` endpoint.
+You will be given a deployment URL, with which you can access the contents of the FaunaDB database at the `/api` endpoint.
 
 To deploy your Node.js + FaunaDB project from a Git repository, you can use either [Now for GitHub](/docs/v2/advanced/now-for-github/) or [Now for GitLab](/docs/v2/advanced/now-for-gitlab/) to have your project automatically deployed on every push, and aliased on push to master.
 
