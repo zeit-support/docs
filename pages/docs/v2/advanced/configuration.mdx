@@ -11,18 +11,18 @@ export const meta = {
   description:
     'Configuring ZEIT Now so that your deployments are exactly as you need them.',
   editUrl: 'pages/docs/v2/advanced/configuration.mdx',
-  lastEdited: '2019-08-27T11:42:11.000Z'
+  lastEdited: '2019-08-30T11:25:09.000Z'
 }
 
 When using [Now CLI](/download), [Now for GitHub](/docs/v2/getting-started/installation#now-for-github) or [Now for GitLab](/docs/v2/getting-started/installation#now-for-gitlab), the configuration for your deployment is read from the `now.json` file.
 
 The parameters stored in that file are passed to the [Deployment Creation API endpoint](/docs/api/v2#endpoints/deployments/create-a-new-deployment), which performs validation and stores the metadata in our backend.
 
-### Schemas
+## Schemas
 
 If you are looking for a strict or machine-friendly specification of the configuration, we recommend [looking at `zeit/schemas`](https://github.com/zeit/schemas).
 
-### Configuration File
+## Configuration File
 
 The following sections describe each field allowed in a `now.json` configuration file and how to use them.
 
@@ -355,7 +355,7 @@ When set to false, [Now for GitHub](/docs/v2/integrations/now-for-github) will a
 }`}</Code>
 </Example>
 
-### Reserved Variables
+## Reserved Variables
 
 The following environment variable names are [reserved](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html#lambda-environment-variables) and therefore unavailable for use:
 
@@ -379,16 +379,67 @@ The following environment variable names are [reserved](https://docs.aws.amazon.
 
 Using either, or any, of these environment variables, will result in the deployment failing.
 
----
+## Global Configuration
 
-<Note>
-  If you are looking to configure the ZEIT Now clients under your system user,
-  read the{' '}
-  <GenericLink href="/docs/v2/platform/global-configuration">
-    documentation for global configuration
-  </GenericLink>
-  .
-</Note>
+Using the following files and configuration options, you can configure [Now CLI](/download) under your system user.
+
+There are two global configuration files: `config.json` and `auth.json`. By default, these files are held in a directory named `.now` within the user's home directory. For example on Unix based systems they will be found at `~/.now/*.json`.
+
+### config.json
+
+This file is used for global configuration of ZEIT Now deployments. Now CLI uses this file as a way to co-ordinate how deployments should be treated, consistently.
+
+The first option is a single `_` that gives a description to the file, if a user should find themselves looking through it without context.
+
+The following options are all of the options that can be used by users to configure their Now deployments globally on their system for that user profile:
+
+#### currentTeam
+
+**Type**: `String`.
+
+**Valid values**: A [team ID](/docs/api/#endpoints/teams/list-all-your-teams).
+
+This option tells [Now CLI](/download) which context is currently active. If this property exists and contains a team ID, that team is used as the scope for deployments, otherwise if this property does not exist, the user's personal account is used.
+
+<Example>
+  <Code lang="json">{`{
+  "currentTeam": "team_ofwUZockJlL53hINUGCc1ONW"
+}`}</Code>
+</Example>
+
+#### api
+
+**Type**: `String`.
+
+**Valid values**: [An API Origin URL](/docs/api/#api-basics/server-specs/origins).
+
+This option selects which API Origin [Now CLI](/download) should use when performing an action requiring the API.
+
+<Example>
+  <Code lang="json">{`{
+  "api": "https://api-sfo1.zeit.co"
+}`}</Code>
+</Example>
+
+#### collectMetrics
+
+**Type**: `Boolean`.
+
+**Valid values**: `true` (default), `false`.
+
+This option defines whether [Now CLI](/download) should collect anonymous metrics about which commands are invoked the most, how long they take to run, and which errors customers are running into.
+
+<Example>
+  <Code lang="json">{`{
+  "collectMetrics": true
+}`}</Code>
+</Example>
+
+### auth.json
+
+This file should not be edited manually. It exists to contain the authentication information for the ZEIT Now clients.
+
+In the case that you are uploading your global configuration setup to a potentially insecure destination, we highly recommend ensuring that this file will not be uploaded, as it allows an attacker to gain access to your provider accounts.
 
 export default ({ children }) => <Doc meta={meta}>{children}</Doc>
 
