@@ -157,7 +157,7 @@ class HeaderFeedback extends Component {
       // If a value exists, add it back to the textarea when focused
       this.textAreaRef.value = this.state.value
 
-      if (this.props.hideHeader) {
+      if (this.props.hideHeader !== prevProps.hideHeader) {
         this.textAreaRef.blur()
 
         if (prevState.errorMessage && this.textAreaRef) {

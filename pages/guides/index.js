@@ -82,12 +82,13 @@ const Guides = () => (
     </div>
 
     <style jsx>{`
-      :global(span a) {
-        width: 100%;
-      }
       .guides {
         min-height: 100vh;
         padding-bottom: 64px;
+      }
+
+      .guides :global(span a) {
+        width: 100%;
       }
 
       .guide-heading {

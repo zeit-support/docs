@@ -14,7 +14,7 @@ export const meta = {
   authors: ['msweeneydev'],
   url: '/guides/zero-downtime-domain-migration',
   editUrl: 'pages/guides/zero-downtime-domain-migration.mdx',
-  lastEdited: '2019-08-23T14:21:42.000Z'
+  lastEdited: '2019-08-27T14:52:10.000Z'
 }
 
 When migrating to another set of nameservers, there can often be downtime incurred. In this guide we will walk you through adding your domain to ZEIT and setting it up before migrating the nameservers, ensuring no downtime at any point.
@@ -119,7 +119,7 @@ To use your custom domain with your project, you can add it to your project from
   .
 </Note>
 
-To do this, select your project from the dashboard and click the **Domains** tab. Here you will find an input to add your custom domains for production, such as `timothy.now.sh` or `my-zeit-domain.com`.
+Select a project from your dashboard and click the **Domains** tab. Add your custom domain for production here, such as `[custom domain name].[tld]`, a subdomain `[subdomain].[custom domain name].[tld]` (providing the root domain is added to your account), or using the free `now.sh` deployment suffix `[name].now.sh`.
 
 If the domain is **registered to your account and available for use** it will be indicated below the input box and you can continue. Otherwise, if the domain is **not registered to your account**, it will automatically be added and we will attempt to verify it for you.
 

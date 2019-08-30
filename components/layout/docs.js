@@ -158,38 +158,44 @@ class withDoc extends React.Component {
           </Head>
 
           <Main>
-            <Sidebar active={navigationActive}>
-              <div className="toggle-group-wrapper">
-                <ToggleGroup>
-                  <ToggleItem
-                    active={
-                      router.pathname.startsWith('/docs') &&
-                      !router.pathname.startsWith('/docs/api')
-                    }
-                  >
-                    <Link prefetch href="/docs">
-                      <a onClick={this.handleIndexClick}>Docs</a>
-                    </Link>
-                  </ToggleItem>
-                  <ToggleItem active={router.pathname.startsWith('/docs/api')}>
-                    <Link prefetch href="/docs/api">
-                      <a onClick={this.handleIndexClick}>API Reference</a>
-                    </Link>
-                  </ToggleItem>
-                  <ToggleItem active={router.pathname.startsWith('/examples')}>
-                    <Link prefetch href="/examples">
-                      <a onClick={this.handleIndexClick}>Examples</a>
-                    </Link>
-                  </ToggleItem>
-                </ToggleGroup>
-              </div>
-              <DocsNavbarDesktop data={versionData} url={router} />
-              <h5 className="platform-select-title">Now Platform Version</h5>
-              <VersionSelect
-                version={version}
-                onChange={this.handleVersionChange}
-              />
-            </Sidebar>
+            <NonAmpOnly>
+              <Sidebar active={navigationActive}>
+                <div className="toggle-group-wrapper">
+                  <ToggleGroup>
+                    <ToggleItem
+                      active={
+                        router.pathname.startsWith('/docs') &&
+                        !router.pathname.startsWith('/docs/api')
+                      }
+                    >
+                      <Link prefetch href="/docs">
+                        <a onClick={this.handleIndexClick}>Docs</a>
+                      </Link>
+                    </ToggleItem>
+                    <ToggleItem
+                      active={router.pathname.startsWith('/docs/api')}
+                    >
+                      <Link prefetch href="/docs/api">
+                        <a onClick={this.handleIndexClick}>API Reference</a>
+                      </Link>
+                    </ToggleItem>
+                    <ToggleItem
+                      active={router.pathname.startsWith('/examples')}
+                    >
+                      <Link prefetch href="/examples">
+                        <a onClick={this.handleIndexClick}>Examples</a>
+                      </Link>
+                    </ToggleItem>
+                  </ToggleGroup>
+                </div>
+                <DocsNavbarDesktop data={versionData} url={router} />
+                <h5 className="platform-select-title">Now Platform Version</h5>
+                <VersionSelect
+                  version={version}
+                  onChange={this.handleVersionChange}
+                />
+              </Sidebar>
+            </NonAmpOnly>
             <Content>
               <div className="heading content-heading">
                 {version === 'v1' && (

@@ -8,7 +8,8 @@ const Header = ({
   hideHeaderSearch = true,
   children,
   isTop,
-  detached
+  detached,
+  isAmp
 }) => (
   <header className={className}>
     <Wrapper className="content">{children}</Wrapper>
@@ -36,7 +37,9 @@ const Header = ({
     `}</style>
     <style jsx>{`
       header {
-        position: ${hideHeaderSearch && dynamicSearch ? 'absolute' : 'fixed'};
+        position: ${(hideHeaderSearch && dynamicSearch) || isAmp
+          ? 'absolute'
+          : 'fixed'};
         top: ${hideHeader && dynamicSearch ? '-80px' : '0'};
         background: ${hideHeaderSearch && dynamicSearch
           ? 'transparent'

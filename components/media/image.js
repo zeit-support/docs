@@ -66,7 +66,7 @@ class Image extends Component {
     } = this.props
 
     const aspectRatio = String((height / width) * 100) + '%'
-    const classes = width > 650 && oversize ? 'oversize' : ''
+    const classes = width > 768 && oversize ? 'oversize' : ''
 
     if (video || videoSrc) {
       return <VideoComponent src={videoSrc} {...this.props} />
@@ -150,7 +150,7 @@ class Image extends Component {
                 figure.oversize {
                   width: ${width}px;
                   margin: ${margin}px 0 ${margin}px
-                    calc(((${width}px - 650px) / 2) * -1);
+                    calc(((${width}px - 768px) / 2) * -1);
                 }
               }
             `}</style>

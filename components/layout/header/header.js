@@ -146,50 +146,28 @@ class Header extends Component {
   }
 
   renderSearch() {
-    const {
-      isAmp,
-      router: { pathname }
-    } = this.props
     return (
-      <>
-        {!isAmp ? (
-          <div className="search-bar">
-            <InstantSearch
-              indexName="prod_docs"
-              searchClient={searchClient}
-              searchState={this.state.searchState}
-              onSearchStateChange={searchState => {
-                this.setState({
-                  searchState: {
-                    ...this.state.searchState,
-                    ...searchState
-                  }
-                })
-              }}
-            >
-              <Configure hitsPerPage={8} />
-              <AutoComplete
-                onSuggestionSelected={this.onSuggestionSelected}
-                onSuggestionCleared={this.onSuggestionCleared}
-              />
-            </InstantSearch>
-          </div>
-        ) : (
-          <form
-            method="GET"
-            action={pathname.replace(/\.amp$/, '')}
-            target="_top"
-            className="search-bar"
-          >
-            <input
-              required
-              name="query"
-              type="text"
-              className="amp-search"
-              placeholder="Search..."
-            />
-          </form>
-        )}
+      <div className="search-bar">
+        <InstantSearch
+          indexName="prod_docs"
+          searchClient={searchClient}
+          searchState={this.state.searchState}
+          onSearchStateChange={searchState => {
+            this.setState({
+              searchState: {
+                ...this.state.searchState,
+                ...searchState
+              }
+            })
+          }}
+        >
+          <Configure hitsPerPage={8} />
+          <AutoComplete
+            onSuggestionSelected={this.onSuggestionSelected}
+            onSuggestionCleared={this.onSuggestionCleared}
+          />
+        </InstantSearch>
+
         <style jsx>{`
           .search-bar :global(.react-autosuggest__input),
           .search-bar input {
@@ -207,19 +185,6 @@ class Header extends Component {
             border-color: var(--accents-5);
             box-shadow: none;
             background: var(--geist-background);
-          }
-
-          .amp-search {
-            border: 1px solid var(--accents-2);
-            outline: 0;
-            text-align: left;
-            font-size: var(--font-size-small);
-            line-height: var(--line-height-small);
-            max-width: 60vw;
-            width: 278px;
-            background: var(--accents-1);
-            padding: 0 12px;
-            border-radius: 5px;
           }
 
           .search-bar
@@ -242,7 +207,7 @@ class Header extends Component {
             transform: translateX(-50%);
           }
         `}</style>
-      </>
+      </div>
     )
   }
 
@@ -282,19 +247,9 @@ class Header extends Component {
           isTop={isTop}
           inHero={inHero}
           className="header"
+          isAmp={isAmp}
         >
           <div className="left-nav">
-            {isAmp && (
-              <amp-state id="header">
-                <script
-                  type="application/json"
-                  dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({ active: navigationActive })
-                  }}
-                />
-              </amp-state>
-            )}
-
             <a
               className="logo"
               href={dashboard}
@@ -304,107 +259,117 @@ class Header extends Component {
               <Logo height="25px" width="28px" />
             </a>
 
-            <Navigation
-              data-amp-bind-class={buildAmpNavClass('main-navigation')}
-              className={cn('main-navigation', { active: false })}
-            >
-              {!zenModeActive && (
-                <div className="navigation-items">
-                  <NavigationItem
-                    href="/docs"
-                    active={
-                      router.pathname.startsWith('/docs') &&
-                      !router.pathname.startsWith('/docs/api') &&
-                      !router.pathname.startsWith('/docs/integrations')
-                    }
-                    onClick={handleIndexClick}
-                  >
-                    Docs
-                  </NavigationItem>
-                  <NavigationItem
-                    href="/guides"
-                    active={router.pathname.startsWith('/guides')}
-                    onClick={handleIndexClick}
-                  >
-                    Guides
-                  </NavigationItem>
+            {!isAmp && (
+              <Navigation
+                data-amp-bind-class={buildAmpNavClass('main-navigation')}
+                className={cn('main-navigation', { active: false })}
+              >
+                {!zenModeActive && (
+                  <div className="navigation-items">
+                    <NavigationItem
+                      href="/docs"
+                      active={
+                        router.pathname.startsWith('/docs') &&
+                        !router.pathname.startsWith('/docs/api') &&
+                        !router.pathname.startsWith('/docs/integrations')
+                      }
+                      onClick={handleIndexClick}
+                    >
+                      Docs
+                    </NavigationItem>
+                    <NavigationItem
+                      href="/guides"
+                      active={router.pathname.startsWith('/guides')}
+                      onClick={handleIndexClick}
+                    >
+                      Guides
+                    </NavigationItem>
 
-                  <div
-                    className={cn('developer-dropdown desktop-only', {
-                      active:
-                        router.pathname.startsWith('/docs/api') ||
-                        router.pathname.startsWith('/docs/integrations')
-                    })}
-                  >
-                    <MenuPopOver
-                      title="API"
-                      offsetArrowLeft={60}
-                      primaryList={[
-                        { title: 'Platform API', url: '/docs/api' },
-                        {
-                          title: 'Integrations API',
-                          url: '/docs/integrations'
-                        }
-                      ]}
-                    />
-                  </div>
-                </div>
-              )}
-            </Navigation>
-          </div>
-
-          <div className="search">
-            <span
-              className={`search-wrapper ${hideHeaderSearch ? 'hidden' : ''}`}
-            >
-              {' '}
-              {this.renderSearch()}
-            </span>
-          </div>
-
-          <div className="right-nav">
-            <Navigation className="user-navigation">
-              <AmpUserFeedback />
-              {!zenModeActive && userLoaded && !isAmp && (
-                <Fragment>
-                  {!user ? (
-                    <Fragment>
-                      <HeaderFeedback
-                        onFeedback={this.handleFeedbackSubmit}
-                        hideHeader={hideHeader}
+                    <div
+                      className={cn('developer-dropdown desktop-only', {
+                        active:
+                          router.pathname.startsWith('/docs/api') ||
+                          router.pathname.startsWith('/docs/integrations')
+                      })}
+                    >
+                      <MenuPopOver
+                        title="API"
+                        offsetArrowLeft={60}
+                        primaryList={[
+                          { title: 'Platform API', url: '/docs/api' },
+                          {
+                            title: 'Integrations API',
+                            url: '/docs/integrations'
+                          }
+                        ]}
                       />
-                      <NavigationItem href="/blog">Blog</NavigationItem>
-                      <NavigationItem className="chat" href="/support">
-                        Support
-                      </NavigationItem>
-                      <NavigationItem href="/login">Login</NavigationItem>
-                    </Fragment>
-                  ) : (
+                    </div>
+                  </div>
+                )}
+              </Navigation>
+            )}
+          </div>
+
+          {!isAmp && (
+            <>
+              <div className="search">
+                <span
+                  className={`search-wrapper ${
+                    hideHeaderSearch ? 'hidden' : ''
+                  }`}
+                >
+                  {' '}
+                  {this.renderSearch()}
+                </span>
+              </div>
+
+              <div className="right-nav">
+                <Navigation className="user-navigation">
+                  <AmpUserFeedback />
+                  {!zenModeActive && userLoaded && (
                     <Fragment>
-                      <HeaderFeedback onFeedback={this.handleFeedbackSubmit} />
-                      <NavigationItem href="/blog">Blog</NavigationItem>
-                      <NavigationItem className="chat" href="/support">
-                        Support
-                      </NavigationItem>
-                      <span className="avatar-wrapper">
-                        <AvatarPopOverLink
-                          top={43}
-                          avatarSize={32}
-                          user={user}
-                          team={currentTeamSlug || null}
-                          pathname={router.pathname}
-                          onLogout={this.handleLogout}
-                        />
-                      </span>
+                      {!user ? (
+                        <Fragment>
+                          <HeaderFeedback
+                            onFeedback={this.handleFeedbackSubmit}
+                            hideHeader={hideHeader}
+                          />
+                          <NavigationItem href="/blog">Blog</NavigationItem>
+                          <NavigationItem className="chat" href="/support">
+                            Support
+                          </NavigationItem>
+                          <NavigationItem href="/login">Login</NavigationItem>
+                        </Fragment>
+                      ) : (
+                        <Fragment>
+                          <HeaderFeedback
+                            onFeedback={this.handleFeedbackSubmit}
+                          />
+                          <NavigationItem href="/blog">Blog</NavigationItem>
+                          <NavigationItem className="chat" href="/support">
+                            Support
+                          </NavigationItem>
+                          <span className="avatar-wrapper">
+                            <AvatarPopOverLink
+                              top={43}
+                              avatarSize={32}
+                              user={user}
+                              team={currentTeamSlug || null}
+                              pathname={router.pathname}
+                              onLogout={this.handleLogout}
+                            />
+                          </span>
+                        </Fragment>
+                      )}
                     </Fragment>
                   )}
-                </Fragment>
-              )}
-            </Navigation>
-            <div className="menu-arrow" onClick={onToggleNavigation}>
-              <MenuToggle expanded={navigationActive} />
-            </div>
-          </div>
+                </Navigation>
+                <div className="menu-arrow" onClick={onToggleNavigation}>
+                  <MenuToggle expanded={navigationActive} />
+                </div>
+              </div>
+            </>
+          )}
         </LayoutHeader>
 
         {navigationActive && (

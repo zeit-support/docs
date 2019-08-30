@@ -91,7 +91,7 @@ class Guide extends React.PureComponent {
               </Wrapper>
             </header>
 
-            <Wrapper width="650">
+            <Wrapper width="768">
               <section className="guide content">
                 {this.props.children}
                 <NonAmpOnly>

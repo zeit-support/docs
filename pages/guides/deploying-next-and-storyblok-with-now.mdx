@@ -13,10 +13,10 @@ export const meta = {
     'Use Storyblok as a Headless CMS to power content for your Next.js app deployed with ZEIT Now.',
   published: '2019-06-24T16:51:04.000Z',
   authors: ['msweeneydev'],
-  url: 'https://zeit.co/guides/deploying-next-and-storyblok-with-now',
+  url: '/guides/deploying-next-and-storyblok-with-now',
   image: `https://zeit.co/docs/static/guides/deploying-next-storyblok-with-now/deploying-next-storyblok-with-now.png`,
   editUrl: 'pages/guides/deploying-next-and-storyblok-with-now.mdx',
-  lastEdited: '2019-08-23T14:21:42.000Z'
+  lastEdited: '2019-08-28T13:42:24.000Z'
 }
 
 In this guide, you will discover how to create a [Next.js](https://nextjs.org/) app that displays links to posts from the [ZEIT blog](/blog) by utilizing the [Storyblok](https://www.storyblok.com/) headless CMS, before deploying **with just a single command** to [ZEIT Now](/docs/v2).
@@ -29,8 +29,8 @@ By following this guide, you will create a clone of the [example app](https://ne
   src={`${
     process.env.ASSETS
   }/guides/deploying-next-storyblok-with-now/deploying-next-storyblok-with-now.png`}
-  width={650}
-  height={380}
+  width={2048 / 2.5}
+  height={1170 / 2.5}
   oversize
 />
 
@@ -42,9 +42,10 @@ From your **Content Dashboard**, create a new **Entry** with a **Content type** 
   src={`${
     process.env.ASSETS
   }/guides/deploying-next-storyblok-with-now/creating-entry.png`}
-  width={650}
-  height={243}
+  width={1390/2}
+  height={521/2}
   oversize
+  shadow
 />
 <Caption>Creating an Entry for your Next.js + Storyblok project using the Storyblok Content Dashboard.</Caption>
 
@@ -59,9 +60,10 @@ After completing the details in the modal, click **Create**, this will take you 
   src={`${
     process.env.ASSETS
   }/guides/deploying-next-storyblok-with-now/define-schema.png`}
-  width={650}
-  height={328}
+  width={867/2}
+  height={437/2}
   oversize
+  shadow
 />
 <Caption>Defining a <b>Post Schema</b> for your Next.js + Storyblok project.</Caption>
 
@@ -79,9 +81,10 @@ Your **Post Schema** should look like this:
   src={`${
     process.env.ASSETS
   }/guides/deploying-next-storyblok-with-now/defined-schema.png`}
-  width={650}
-  height={471}
+  width={830/2}
+  height={602/2}
   oversize
+  shadow
 />
 <Caption>An example <b>Post Schema</b> for your Next.js + Storyblok project.</Caption>
 
