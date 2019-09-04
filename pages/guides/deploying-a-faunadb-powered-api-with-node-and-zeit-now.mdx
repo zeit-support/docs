@@ -20,7 +20,7 @@ export const meta = {
   }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/card.png`,
   editUrl:
     'pages/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now.mdx',
-  lastEdited: '2019-08-27T20:17:12.000Z'
+  lastEdited: '2019-09-04T20:19:08.000Z'
 }
 
 [FaunaDB](https://fauna.com/) is a serverless cloud database that gives you low latency access to app data around the world.
@@ -145,12 +145,7 @@ Create a [`now.json` file](https://zeit.co/docs/v2/deployments/configuration/) t
 
 ## Step 4: Writing the Serverless Function
 
-Create the Node.js API endpoint that will fetch the data from FaunaDB by making an `/api` directory with an `index.js` file inside:
-
-<Snippet dark text="mkdir -p api/index.js && cd api" />
-<Caption>
-  Creating an <InlineCode>/api</InlineCode>{' '}directory with a <InlineCode>index.js</InlineCode> file inside.
-</Caption>
+Create the Node.js API endpoint that will fetch the data from FaunaDB by making an `/api` directory with an `index.js` file inside.
 
 The `index.js` file will act as the default endpoint for getting information from your database. The file should contain the following code:
 
