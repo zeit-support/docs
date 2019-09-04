@@ -309,7 +309,7 @@ function HomePage({ profiles, page, pageCount }) {
       <ul>
         {profiles.map(p => (
           <li className="profile" key={p.id}>
-            <Link prefetch href={`/profile?id=${p.id}`}>
+            <Link href={`/profile?id=${p.id}`}>
               <a>
                 <img src={p.avatar} />
                 <span>{p.name}</span>
@@ -320,12 +320,12 @@ function HomePage({ profiles, page, pageCount }) {
       </ul>
       <nav>
         {page > 1 && (
-          <Link prefetch href={`/?page=${page - 1}&limit=9`}>
+          <Link href={`/?page=${page - 1}&limit=9`}>
             <a>Previous</a>
           </Link>
         )}
         {page < pageCount && (
-          <Link prefetch href={`/?page=${page + 1}&limit=9`}>
+          <Link href={`/?page=${page + 1}&limit=9`}>
             <a className="next">Next</a>
           </Link>
         )}
@@ -374,7 +374,7 @@ function ProfilePage({ profile }) {
         <h1>{profile.name}</h1>
         <p>{profile.address}</p>
         <p>{profile.email}</p>
-        <Link prefetch href="/">
+        <Link href="/">
           <a>← Back to profiles</a>
         </Link>
       </div>

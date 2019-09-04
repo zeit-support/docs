@@ -171,21 +171,21 @@ class IntegrationsPage extends Component {
                           !router.pathname.startsWith('/docs/api')
                         }
                       >
-                        <Link prefetch href="/docs">
+                        <Link href="/docs">
                           <a onClick={this.handleIndexClick}>Docs</a>
                         </Link>
                       </ToggleItem>
                       <ToggleItem
                         active={router.pathname.startsWith('/docs/api')}
                       >
-                        <Link prefetch href="/docs/api">
+                        <Link href="/docs/api">
                           <a onClick={this.handleIndexClick}>API Reference</a>
                         </Link>
                       </ToggleItem>
                       <ToggleItem
                         active={router.pathname.startsWith('/examples')}
                       >
-                        <Link prefetch href="/examples">
+                        <Link href="/examples">
                           <a onClick={this.handleIndexClick}>Examples</a>
                         </Link>
                       </ToggleItem>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import cn from 'classnames'
-import { LinkWithHoverPrefetch } from '~/components/text/link'
 import qs from 'querystring'
 import { parse } from 'url'
 import _scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
@@ -311,13 +311,9 @@ export class NavLink extends React.Component {
             {info.name}
           </a>
         ) : (
-          <LinkWithHoverPrefetch
-            href={info.href}
-            as={info.as || info.href}
-            onClick={onClick}
-          >
-            {info.name}
-          </LinkWithHoverPrefetch>
+          <Link href={info.href} as={info.as || info.href}>
+            <a onClick={onClick}>{info.name}</a>
+          </Link>
         )}
         <style jsx>{`
           div.selected {

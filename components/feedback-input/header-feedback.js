@@ -232,6 +232,7 @@ class HeaderFeedback extends Component {
     const { focused } = this.state
     delete props.onFeedback
     delete props.textAreaStyle
+    delete props.hideHeader
 
     return (
       <ClickOutside

@@ -1,3 +1,5 @@
+const literal = '`'
+
 const InlineCode = ({ children, noWrap, color }) => (
   <code className={noWrap && 'no-wrap'}>
     {children}
@@ -17,11 +19,11 @@ const InlineCode = ({ children, noWrap, color }) => (
         }
 
         code::before {
-          content: '\`';
+          content: '${literal}';
         }
 
         code::after {
-          content: '\`';
+          content: '${literal}';
         }
       `}
     </style>

@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const ActivePageButton = withRouter(({ children, router, href }) => {
   return (
-    <Link href={href} prefetch>
+    <Link href={href}>
       <span className="active-button">
         {children}
         <style jsx>{`

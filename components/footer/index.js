@@ -15,27 +15,27 @@ const Footer = ({ className }) => {
         <ul className="navigation">
           <li className="links-title">Company</li>
           <li className="home">
-            <Link prefetch href="/" as="/home">
+            <Link href="/" as="/home">
               <a>Home</a>
             </Link>
           </li>
           <li className="about">
-            <Link prefetch href="/about">
+            <Link href="/about">
               <a>About</a>
             </Link>
           </li>
           <li className="careers">
-            <Link prefetch href="/careers">
+            <Link href="/careers">
               <a>Careers</a>
             </Link>
           </li>
           <li className="blog">
-            <Link prefetch href="/blog">
+            <Link href="/blog">
               <a>Blog</a>
             </Link>
           </li>
           <li className="day">
-            <Link prefetch href="/day">
+            <Link href="/day">
               <a>ZEIT Day</a>
             </Link>
           </li>
@@ -46,31 +46,31 @@ const Footer = ({ className }) => {
             <a href="/download">Download</a>
           </li>
           <li className="pricing">
-            <Link prefetch href="/pricing">
+            <Link href="/pricing">
               <a>Pricing</a>
             </Link>
             <span>{'/'}</span>
-            <Link prefetch href="/pricing/calculator">
+            <Link href="/pricing/calculator">
               <a>Calculator</a>
             </Link>
           </li>
           <li className="now-for-github">
-            <Link prefetch href="/github">
+            <Link href="/github">
               <a>Now for GitHub</a>
             </Link>
           </li>
           <li className="now-for-gitlab">
-            <Link prefetch href="/gitlab">
+            <Link href="/gitlab">
               <a>Now for GitLab</a>
             </Link>
           </li>
           <li>
-            <Link prefetch href="/smart-cdn">
+            <Link href="/smart-cdn">
               <a>Smart CDN</a>
             </Link>
           </li>
           <li>
-            <Link prefetch href="/integrations">
+            <Link href="/integrations">
               <a>Integrations Marketplace</a>
             </Link>
           </li>
@@ -90,7 +90,7 @@ const Footer = ({ className }) => {
             <a href="/examples">Examples</a>
           </li>
           <li className="tv">
-            <Link prefetch href="/tv">
+            <Link href="/tv">
               <a>TV</a>
             </Link>
           </li>
@@ -98,23 +98,23 @@ const Footer = ({ className }) => {
         <ul className="navigation">
           <li className="links-title">More</li>
           <li className="oss">
-            <Link prefetch href="/oss">
+            <Link href="/oss">
               <a>Open Source Software</a>
             </Link>
           </li>
           <li className="design">
-            <Link prefetch href="/design">
+            <Link href="/design">
               <a>Design Assets</a>
             </Link>
           </li>
 
           <li className="security">
-            <Link prefetch href="/security">
+            <Link href="/security">
               <a>Security</a>
             </Link>
           </li>
           <li className="support">
-            <Link prefetch href="/support">
+            <Link href="/support">
               <a>Support</a>
             </Link>
           </li>
@@ -124,12 +124,12 @@ const Footer = ({ className }) => {
           <li className="links-title" />
 
           <li className="privacy">
-            <Link prefetch href="/privacy">
+            <Link href="/privacy">
               <a>Privacy Policy</a>
             </Link>
           </li>
           <li className="terms">
-            <Link prefetch href="/terms">
+            <Link href="/terms">
               <a>Terms of Service</a>
             </Link>
           </li>

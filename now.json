@@ -1,17 +1,17 @@
 {
   "version": 2,
   "public": true,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@now/static-build",
-      "config": {
-        "forceBuildIn": "bru1"
-      }
-    },
-    { "src": "static/**/*", "use": "@now/static" }
-  ],
   "routes": [
+    {
+      "src": "/(.*)/$",
+      "dest": "/$1",
+      "continue": true
+    },
+    {
+      "src": "/api(.*)",
+      "status": 301,
+      "headers": { "Location": "/docs/api" }
+    },
     {
       "src": "/docs/router-status/(?<code>[^/]*)",
       "status": 301,

@@ -80,7 +80,6 @@ class AutoComplete extends Component {
         href={`${hit.url}?query=${encodeURIComponent(this.state.value)}${
           hit.anchor ? `${hit.anchor}` : ''
         }`}
-        prefetch
       >
         <a>
           <span className="suggestion__title">

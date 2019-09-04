@@ -7,7 +7,11 @@ import { H1, H4, P } from '~/components/text'
 import { AvatarGroup } from '~/components/avatar'
 import { GenericLink } from '~/components/text/link'
 import Button from '~/components/buttons'
-import guides from '~/lib/data/guides'
+import guides from '~/lib/data/guides.json'
+
+const sortedGuides = guides.sort(
+  (a, b) => new Date(b.published) - new Date(a.published)
+)
 
 const Guides = () => (
   <Layout>
@@ -40,7 +44,7 @@ const Guides = () => (
 
       <Wrapper>
         <div className="guide-list">
-          {guides.map((guide, i) => (
+          {sortedGuides.map((guide, i) => (
             <GenericLink href={guide.url} key={`${guide.title}.${i}`}>
               <article className="guide">
                 <div className="titles">

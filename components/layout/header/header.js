@@ -293,7 +293,7 @@ class Header extends Component {
                       })}
                     >
                       <MenuPopOver
-                        title="API"
+                        title="Reference"
                         offsetArrowLeft={60}
                         primaryList={[
                           { title: 'Platform API', url: '/docs/api' },
@@ -409,7 +409,7 @@ class Header extends Component {
             </div>
 
             <div className="section">
-              <span className="section__heading">API</span>
+              <span className="section__heading">Reference</span>
               <div className="group">
                 <NavigationItem
                   href="/docs/api"
