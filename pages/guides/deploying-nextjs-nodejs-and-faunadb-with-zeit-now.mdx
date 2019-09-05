@@ -9,23 +9,25 @@ import Card from '~/components/card'
 import { Code } from '~/components/code'
 
 export const meta = {
-  title: 'Create and Deploy a FaunaDB-Powered Node.js API with ZEIT Now',
+  title:
+    'Create and Deploy a Next.js and FaunaDB-Powered Node.js App with ZEIT Now',
   description:
-    'Create a FaunaDB-Powered Node.js API and deploy it with ZEIT Now.',
-  published: '2019-09-04T17:00:00.000Z',
+    'Create a Next.js and FaunaDB-Powered Node.js App and deploy it with ZEIT Now.',
+  published: '2019-09-18T17:00:00.000Z',
   authors: ['danieltodonnell', 'msweeneydev'],
-  url: '/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now',
+  url: '/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now',
   image: `${
     process.env.ASSETS
-  }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/card.png`,
-  editUrl:
-    'pages/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now.mdx',
+  }/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now/card.png`,
+  editUrl: 'pages/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now.mdx',
   lastEdited: '2019-09-04T20:51:37.000Z'
 }
 
 [FaunaDB](https://fauna.com/) is a serverless cloud database that gives you low latency access to app data around the world.
 
-This guide walks you through making a FaunaDB database and then connecting to it using a Serverless Function deployed with [ZEIT Now](/now).
+This guide walks you though creating a [Next.js](https://nextjs.org) app that receives data from a [Node.js](https://nodejs.org/en/) API powered by [FaunaDB](https://fauna.com/), and how to deploy it with ZEIT Now.
+
+By following this guide, you will create a clone of the [example app](https://nextjs-faunadb-nodejs.now-examples.now.sh/), a starting point to get you up and running with your own Next.js, Node.js, and FaunaDB app in minutes.
 
 ## Step 1: Connecting to FaunaDB
 
@@ -34,7 +36,7 @@ To start, you need to have [created a FaunaDB account](https://dashboard.fauna.c
 <Image
   src={`${
     process.env.ASSETS
-  }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/fauna-create-zeit-db.png`}
+  }/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now/fauna-create-zeit-db.png`}
   width={2048 / 2.5}
   height={1628 / 2.5}
   oversize
@@ -51,7 +53,7 @@ Select the **Shell** tab, then copy in [this FQL script](https://raw.githubuserc
 <Image
   src={`${
     process.env.ASSETS
-  }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/fauna-zeit-db-shell.png`}
+  }/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now/fauna-zeit-db-shell.png`}
   width={2048 / 2.5}
   height={1536 / 2.5}
   oversize
@@ -64,7 +66,7 @@ After executing the script, the **Collections** page will present you with dummy
 <Image
   src={`${
     process.env.ASSETS
-  }/guides/deploying-a-faunadb-powered-api-with-node-and-zeit-now/fauna-zeit-db-collections.png`}
+  }/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now/fauna-zeit-db-collections.png`}
   width={2048 / 2.5}
   height={1536 / 2.5}
   oversize
@@ -90,11 +92,11 @@ On the **Keys** page, you will receive a unique hash called a **Secret**. The **
   However, if the hash is lost, a new one can be created.
 </Note>
 
-## Step 3: API Setup
+## Step 3: Creating Your Next.js App
 
-Get started creating your API by making a project directory and moving into it:
+Get started creating your [Next.js](https://nextjs.org) by making a project directory with the required structure and moving into it:
 
-<Snippet dark text="mkdir faunadb-demo && cd faunadb-demo" />
+<Snippet dark text="mkdir -p faunadb-demo/pages/api && cd faunadb-demo" />
 <Caption>
   Creating and entering into the <InlineCode>/faunadb-demo</InlineCode>{' '}directory.
 </Caption>
@@ -106,46 +108,80 @@ Next, [initialize](https://docs.npmjs.com/cli/init) the project:
   Initializing the project, this creates a <InlineCode>package.json</InlineCode>{' '}file.
 </Caption>
 
-Continue to install [the FaunaDB JavaScript client](https://github.com/fauna/faunadb-js) which allows you to connect to, and query, the database:
+Continue to install [the FaunaDB JavaScript client](https://github.com/fauna/faunadb-js) which allows you to connect to, and query, the database, along with the required dependencies for Next.js:
 
-<Snippet dark text="npm i faunadb" />
+<Snippet dark text="npm i faunadb next react react-dom" />
 <Caption>
-  Adding the <InlineCode>faunadb</InlineCode> Node.js client as a <GenericLink href="https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file">dependency</GenericLink> to the project.
+  Adding the <InlineCode>faunadb</InlineCode>, <InlineCode>next</InlineCode>, <InlineCode>react</InlineCode> and <InlineCode>react-dom</InlineCode> <GenericLink href="https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file">dependencies</GenericLink> to the project.
 </Caption>
 
-To connect, you need to use the secret obtained in [Step 2](#step-2:-create-an-access-key). To use the secret without hard-coding it into your project, add your connection string as a [Now Secret](https://zeit.co/docs/v2/deployments/environment-variables-and-secrets/#securing-environment-variables-using-secrets) using [Now CLI](https://zeit.co/download#now-cli) to keep it secure:
+Inside of the `/pages` directory, create an `index.js` file with the code below:
 
-<Snippet dark text="now secrets add faunadb_secret_key [Your FaunaDB Secret]" />
-<Caption>
-  Adding an environment variable to the project as a <GenericLink href="/docs/v2/serverless-functions/env-and-secrets/#adding-secrets">Now Secret</GenericLink>.
-</Caption>
+```jsx
+import { useEffect, useState } from 'react'
+import Head from 'next/head'
 
-Create a [`now.json` file](https://zeit.co/docs/v2/deployments/configuration/) that tells Now to make available the [Secret](https://zeit.co/docs/v2/deployments/environment-variables-and-secrets/#securing-environment-variables-using-secrets) that you defined, to your project:
-
-```json
-{
-  "env": {
-    "FAUNADB_SECRET_KEY": "@faunadb_secret_key"
-  }
+export default () => {
+  const [data, setData] = useState([])
+  useEffect(() => {
+    async function getData() {
+      const res = await fetch('/api')
+      const newData = await res.json()
+      setData(newData)
+    }
+    getData()
+  }, [])
+  return (
+    <main>
+      <Head>
+        <title>Next.js, FaunaDB and Node.js</title>
+      </Head>
+      <h1>Next.js, FaunaDB and Node.js</h1>
+      <hr />
+      {data.length > 0 && (
+        <div className="container">
+          <h2>Customer Data</h2>
+          <div className="table">
+            <h4>name</h4>
+            <h4 className="telephone">telephone</h4>
+            <h4 className="credit-card">credit card</h4>
+          </div>
+          {data.map(d => (
+            <div className="table table-row">
+              <p>
+                {d.data.firstName} {d.data.lastName}
+              </p>{' '}
+              <p className="telephone">{d.data.telephone}</p>
+              <div className="credit-card credit-card-number">
+                <img src="/icons/visa.svg" />
+                <p>{d.data.creditCard.number}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </main>
+  )
 }
 ```
 
 <Caption>
-  An example <InlineCode>now.json</InlineCode> file that provides the app with
-  an environment variable.
+  Adding a <InlineCode>/pages/index.js</InlineCode> file to the project.
 </Caption>
 
-<Note hint>
-  To use this environment variable{' '}
-  <GenericLink href="/docs/v2/serverless-functions/introduction/#local-development">
-    during local development
+<Note>
+  If you wish to use the same styles as the{' '}
+  <GenericLink href="https://nextjs-faunadb-nodejs.now-examples.now.sh/">
+    example app
   </GenericLink>
-  , you need to add it to a<InlineCode>.env</InlineCode> file.
+  , you can find them <GenericLink href="https://nextjs-faunadb-nodejs.now-examples.now.sh/styles/index.css">
+    here
+  </GenericLink>.
 </Note>
 
 ## Step 4: Writing the Serverless Function
 
-Create the Node.js API endpoint that will fetch the data from FaunaDB by making an `/api` directory with an `index.js` file inside.
+Create the Node.js API endpoint that will fetch the data from FaunaDB by adding an `index.js` file to the `/pages/api` directory.
 
 The `index.js` file will act as the default endpoint for getting information from your database. The file should contain the following code:
 
@@ -182,7 +218,7 @@ module.exports = async (req, res) => {
 ```
 
 <Caption>
-  An example <InlineCode>/api/index.js</InlineCode> file that retrieves
+  An example <InlineCode>/pages/api/index.js</InlineCode> file that retrieves
   information from the database.
 </Caption>
 
@@ -201,7 +237,7 @@ You can now deploy the project with **a single command**:
 
 You will be given a deployment URL, with which you can access the contents of the FaunaDB database at the `/api` endpoint.
 
-To deploy your Node.js + FaunaDB project from a Git repository, you can use either [Now for GitHub](/docs/v2/advanced/now-for-github/) or [Now for GitLab](/docs/v2/advanced/now-for-gitlab/) to have your project automatically deployed on every push, and aliased on push to master.
+To deploy your Next.js, Node.js, and FaunaDB project from a Git repository, you can use either [Now for GitHub](/docs/v2/advanced/now-for-github/) or [Now for GitLab](/docs/v2/advanced/now-for-gitlab/) to have your project automatically deployed on every push, and aliased on push to master.
 
 export default ({ children }) => <Guide meta={meta}>{children}</Guide>
 
