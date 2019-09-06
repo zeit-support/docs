@@ -8,37 +8,34 @@ import { GenericLink } from '~/components/text/link'
 import Snippet from '~/components/snippet'
 
 export const meta = {
-  title: 'Deploy To Now',
+  title: 'Deploy Button',
   description:
-    'The Deploy to Now button can be used to deploy GitHub repositories to ZEIT Now.',
+    'The Deploy Button can be used to deploy GitHub repositories to ZEIT Now.',
   editUrl: 'pages/docs/v2/advanced/deploy-button.mdx',
-  lastEdited: '2019-09-06T22:48:22.000Z'
+  lastEdited: '2019-09-06T23:39:16.000Z'
 }
 
-The Deploy to Now button can be used to deploy any GitHub repository to ZEIT Now, creating a project for the user and optionally a Git repository to link to it.
+The Deploy Button can be used to deploy any GitHub repository to ZEIT Now, creating a project for the user and optionally a Git repository.
 
 ## Usage
 
-You can add the Deploy to Now button anywhere that will render an `.svg` image. You can find the URL for the button below:
+You can add the Deploy Button anywhere that will render an `.svg` image.
 
-<Snippet dark text="https://zeit.co/button" />
-<Caption>The URL for the Deploy to Now button.</Caption>
-
-However, to make this button more useful, you can provide a link with it to the `/new/project` endpoint and pass a GitHub repository in the URL like so:
+When implementing the Deploy Button, provide a link with it to the `/new/project` endpoint and pass a GitHub repository as the template query parameter like so:
 
 <Snippet dark text="https://zeit.co/new/project?template=https://github.com/zeit/now-examples/tree/master/amp" />
 <Caption>The URL for deploying GitHub repositories to ZEIT Now.</Caption>
 
 The template parameter can be either a repository URL, or alternatively, a URL for a folder within that repository, both are supported.
 
-By combining both the button and `/new/project` endpoint, you can provide users with a way to deploy your projects in seconds. Some common use cases are listed below.
+By combining both the button and `/new/project` endpoint, you can provide users with a way to deploy projects in seconds. Some common use cases are listed below.
 
 ### Markdown
 
-To render the Deploy to Now button in a [Markdown](https://en.wikipedia.org/wiki/Markdown) file, for example a Git `README.md`, use the following code, changing only the template parameter:
+To render the Deploy button in a [Markdown](https://en.wikipedia.org/wiki/Markdown) file, for example a Git `README.md`, use the following code, changing only the template parameter:
 
 <Snippet dark text="[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/zeit/now-examples/tree/master/gatsby)" />
-<Caption>The code required to add a Deploy to Now Button in Markdown.</Caption>
+<Caption>The code required to add a Deploy Button in Markdown.</Caption>
 
 export default ({ children }) => <Doc meta={meta}>{children}</Doc>
 
