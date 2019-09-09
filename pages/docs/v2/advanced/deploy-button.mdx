@@ -12,7 +12,7 @@ export const meta = {
   description:
     'The Deploy Button can be used to deploy GitHub repositories to ZEIT Now.',
   editUrl: 'pages/docs/v2/advanced/deploy-button.mdx',
-  lastEdited: '2019-09-06T23:45:29.000Z'
+  lastEdited: '2019-09-09T17:54:46.000Z'
 }
 
 The Deploy Button can be used to deploy any GitHub repository to ZEIT Now, creating a project for the user and optionally a Git repository.
@@ -36,6 +36,22 @@ To render the Deploy button in a [Markdown](https://en.wikipedia.org/wiki/Markdo
 
 <Snippet dark text="[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/zeit/now-examples/tree/master/gatsby)" />
 <Caption>The code required to add a Deploy Button in Markdown.</Caption>
+
+### HTML
+
+To use the Deploy to Now button with HTML, add the button as an image and wrap it with a link to the endpoint, changing only the template parameter:
+
+```html
+<a
+  href="https://zeit.co/new/project?template=https://github.com/zeit/now-examples/tree/master/gatsby"
+>
+  <img src="https://zeit.co/button" alt="Deploy to ZEIT Now" />
+</a>
+```
+
+<Caption>
+  The code required to add a Deploy to Now Button to a website or app.
+</Caption>
 
 export default ({ children }) => <Doc meta={meta}>{children}</Doc>
 
