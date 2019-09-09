@@ -19,7 +19,7 @@ export const meta = {
   image:
     'https://og-image.now.sh/**Deploy%20a%20FaunaDB-Powered%20Next.js%20app**%20%3Cbr%2F%3E%20with%20ZEIT%20Now.png?theme=light&md=1&fontSize=70px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fzeit-black-triangle.svg&images=https%3A%2F%2Fseeklogo.com%2Fimages%2FN%2Fnext-js-logo-7929BCD36F-seeklogo.com.png&images=https%3A%2F%2Fres-3.cloudinary.com%2Fcrunchbase-production%2Fimage%2Fupload%2Fc_lpad%2Ch_256%2Cw_256%2Cf_auto%2Cq_auto%3Aeco%2Fywnzi0pt0uw9klatmadc',
   editUrl: 'pages/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now.mdx',
-  lastEdited: '2019-09-05T22:57:11.000Z'
+  lastEdited: '2019-09-09T12:53:06.000Z'
 }
 
 [FaunaDB](https://fauna.com/) is a serverless cloud database that gives you low latency access to app data around the world.
@@ -95,7 +95,7 @@ On the **Keys** page, you will receive a unique hash called a **Secret**. The **
 
 Get started creating your [Next.js](https://nextjs.org) by making a project directory with the required structure and moving into it:
 
-<Snippet dark text="mkdir -p faunadb-demo/pages/api && cd faunadb-demo" />
+<Snippet dark text="mkdir -p faunadb-demo/pages/api && mkdir faunadb-demo/components && cd faunadb-demo" />
 <Caption>
   Creating and entering into the <InlineCode>/faunadb-demo</InlineCode>{' '}directory.
 </Caption>
@@ -119,6 +119,7 @@ Inside of the `/pages` directory, create an `index.js` file with the code below:
 ```jsx
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
+import TableRow from '../components/TableRow'
 
 export default () => {
   const [data, setData] = useState([])
@@ -137,7 +138,7 @@ export default () => {
       </Head>
       <h1>Next.js, FaunaDB and Node.js</h1>
       <hr />
-      {data.length > 0 && (
+      <div className="container-scroll">
         <div className="container">
           <h2>Customer Data</h2>
           <div className="table">
@@ -145,20 +146,25 @@ export default () => {
             <h4 className="telephone">telephone</h4>
             <h4 className="credit-card">credit card</h4>
           </div>
-          {data.map(d => (
-            <div className="table table-row">
-              <p>
-                {d.data.firstName} {d.data.lastName}
-              </p>{' '}
-              <p className="telephone">{d.data.telephone}</p>
-              <div className="credit-card credit-card-number">
-                <img src="/icons/visa.svg" />
-                <p>{d.data.creditCard.number}</p>
-              </div>
-            </div>
-          ))}
+          {data.length > 0 ? (
+            data.map(d => (
+              <TableRow
+                key={d.data.telephone}
+                creditCard={d.data.creditCard.number}
+                firstName={d.data.firstName}
+                lastName={d.data.lastName}
+                telephone={d.data.telephone}
+              />
+            ))
+          ) : (
+            <>
+              <TableRow loading />
+              <TableRow loading />
+              <TableRow loading />
+            </>
+          )}
         </div>
-      )}
+      </div>
     </main>
   )
 }
@@ -166,6 +172,27 @@ export default () => {
 
 <Caption>
   Adding a <InlineCode>/pages/index.js</InlineCode> file to the project.
+</Caption>
+
+Then, create a `TableRow.js` file inside of the `/components` directory with the code below:
+
+```jsx
+export default ({ creditCard, firstName, loading, lastName, telephone }) => (
+  <div className="table table-row">
+    <p className={loading ? 'loading' : ''}>
+      {firstName} {lastName}
+    </p>{' '}
+    <p className={`telephone ${loading ? 'loading' : ''}`}>{telephone}</p>
+    <p className={`credit-card credit-card-number ${loading ? 'loading' : ''}`}>
+      {creditCard && <img src="/icons/visa.svg" />}
+      {creditCard}
+    </p>
+  </div>
+)
+```
+
+<Caption>
+  Adding a <InlineCode>/components/TableRow.js</InlineCode> file to the project.
 </Caption>
 
 <Note>

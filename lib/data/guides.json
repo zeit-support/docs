@@ -131,9 +131,9 @@
     "published": "2019-09-18T17:00:00.000Z",
     "authors": ["danieltodonnell", "msweeneydev"],
     "url": "/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now",
-    "image": "undefined/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now/card.png",
+    "image": "https://og-image.now.sh/**Deploy%20a%20FaunaDB-Powered%20Next.js%20app**%20%3Cbr%2F%3E%20with%20ZEIT%20Now.png?theme=light&md=1&fontSize=70px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fzeit-black-triangle.svg&images=https%3A%2F%2Fseeklogo.com%2Fimages%2FN%2Fnext-js-logo-7929BCD36F-seeklogo.com.png&images=https%3A%2F%2Fres-3.cloudinary.com%2Fcrunchbase-production%2Fimage%2Fupload%2Fc_lpad%2Ch_256%2Cw_256%2Cf_auto%2Cq_auto%3Aeco%2Fywnzi0pt0uw9klatmadc",
     "editUrl": "pages/guides/deploying-nextjs-nodejs-and-faunadb-with-zeit-now.mdx",
-    "lastEdited": "2019-09-04T20:51:37.000Z"
+    "lastEdited": "2019-09-05T22:57:11.000Z"
   },
   {
     "title": "Getting Started with Next.js and ZEIT Now",
