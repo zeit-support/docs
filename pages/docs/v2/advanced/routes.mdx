@@ -10,7 +10,7 @@ export const meta = {
   description:
     'Create proxies, redirects, cache-control headers, and more with ZEIT Now routes, easily.',
   editUrl: 'pages/docs/v2/advanced/routes.mdx',
-  lastEdited: '2019-08-23T13:30:21.000Z'
+  lastEdited: '2019-09-09T21:08:11.000Z'
 }
 
 ZEIT Now uses routes to define the behavior of how a request is handled on the routing side. For example, you might use a route to proxy a URL to another, redirect a client, or apply a header with the response to a request.
@@ -233,6 +233,46 @@ As an example, you can use this property when you have an API endpoint and only 
   <GenericLink href="/docs/v2/advanced/concepts/lambdas/">lambdas</GenericLink>.
 </Note>
 
+## Cascading Order
+
+Routes are applied in the order they are given in the `routes` array. Take the following configuration, for example:
+
+```json
+{
+  "routes": [
+    { "src": "/(.*)", "dest": "/" },
+    { "src": "/first-page", "dest": "/first-page.html" }
+  ]
+}
+```
+
+<Caption>
+  An incorrect example <InlineCode>now.json</InlineCode> file that will match
+  all
+  <InlineCode>routes</InlineCode> and proxy them to <InlineCode>/</InlineCode>
+</Caption>
+
+In this configuration, since the first route matches all possible paths, the second route will never be applied. The order of these routes would have to switch for the latter route to apply to the `/first-page` path.
+
+The correct configuration for all routes to take affect would be:
+
+```json
+{
+  "routes": [
+    { "src": "/first-page", "dest": "/first-page.html" },
+    { "src": "/(.*)", "dest": "/" }
+  ]
+}
+```
+
+<Caption>
+  A correct example <InlineCode>now.json</InlineCode> file that will match all
+  <InlineCode>routes</InlineCode>, only proxying to <InlineCode>/</InlineCode> if
+  there are no matches.
+</Caption>
+
+This type of configuration can be seen in [single-page applications](https://en.wikipedia.org/wiki/Single-page_application) where custom paths need to route to the `index.html` file.
+
 ## Route Parameters
 
 <Note>
@@ -334,51 +374,202 @@ You might find that there are many routes without a `dest`. These routes can be 
 
 In this example, handle filesystem expands to route `/about` and `/contact`.
 
-## Testing Routes
+## Advanced Routing
 
-You can use this [online visual PCRE tester](https://regex101.com) to quickly test your `src` paths before deploying them with ZEIT Now.
+### Basic 404
 
-An interactive PCRE Regex cheatsheet is also available at [Regex101](https://regex101.com).
-
-## Cascading Order
-
-Routes are applied in the order they are given in the `routes` array. Take the following configuration, for example:
+The `routes` array is usually processed before attempting a match. For example, this allows us to send a 404 for specific route patterns:
 
 ```json
 {
+  "version": 2,
+  "routes": [{ "src": "/build/stats", "status": 404, "dest": "/404" }]
+}
+```
+
+This would return a 404 for `/build/stats`. An advanced usage of this pattern can be:
+
+```json
+{
+  "version": 2,
   "routes": [
-    { "src": "/(.*)", "dest": "/" },
-    { "src": "/first-page", "dest": "/first-page.html" }
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "status": 404, "dest": "/404" }
   ]
 }
 ```
 
-<Caption>
-  An incorrect example <InlineCode>now.json</InlineCode> file that will match
-  all
-  <InlineCode>routes</InlineCode> and proxy them to <InlineCode>/</InlineCode>
-</Caption>
+In the snippet above we give precedence to our files in the filesystem - which you can see by appending /\_src to your deployment URL.
 
-In this configuration, since the first route matches all possible paths, the second route will never be applied. The order of these routes would have to switch for the latter route to apply to the `/first-page` path.
+### Fallback to `index.html`
 
-The correct configuration for all routes to take affect would be:
+A common pattern with single-page applications is routing everything to a single file and the browser parses the path. Most SPAs have assets to serve as well, so we should handle the filesystem before rewriting the path:
 
 ```json
 {
+  "version": 2,
   "routes": [
-    { "src": "/first-page", "dest": "/first-page.html" },
-    { "src": "/(.*)", "dest": "/" }
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
 ```
 
-<Caption>
-  A correct example <InlineCode>now.json</InlineCode> file that will match all
-  <InlineCode>routes</InlineCode>, only proxying to <InlineCode>/</InlineCode> if
-  there are no matches.
-</Caption>
+It's important to note that serverless functions are also handled in the filesystem.
 
-This type of configuration can be seen in [single-page applications](https://en.wikipedia.org/wiki/Single-page_application) where custom paths need to route to the `index.html` file.
+### Intercept routes after and before the filesystem
+
+Say the directory structure of a user's project looks like this:
+
+```
+project/
+  about.html
+  contact.html
+  blog.js
+  index.html
+```
+
+If we want to create a route that doesn't interfere with the other files in the filesystem, we should add `{ "handle": "filesystem" }` before:
+
+```json
+{
+  "version": 2,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(?<slug>[^/]+)", "dest": "/blog?slug=$slug" }
+  ]
+}
+```
+
+This is the equivalent of writing except when you add a new file, you don't need to change any config:
+
+```json
+{
+  "version": 2,
+  "routes": [
+    { "src": "/about\\.html", "dest": "/about.html" },
+    { "src": "/index\\.html", "dest": "/index.html" },
+    { "src": "/contact\\.html", "dest": "/contact.html" },
+    { "src": "/secret\\.html", "dest": "/secret.html" },
+    { "src": "/(?<slug>[^/]+)", "dest": "/blog?slug=$slug" }
+  ]
+}
+```
+
+If you want to append headers to block some of those paths, you need a route that comes before handle filesystem:
+
+```json
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/about\\.html",
+      "headers": { "Cache-Control": "max-age=600" },
+      "continue": true
+    },
+    { "src": "/secret\\.html", "status": 404, "dest": "/404" },
+    { "handle": "filesystem" },
+    { "src": "/(?<slug>[^/]+)", "dest": "/blog?slug=$slug" }
+  ]
+}
+```
+
+### `continue` usage
+
+There are some cases where you might want to continue routing after making a match. This is useful when scoping URLs or appending headers.
+
+#### Global Headers with `continue`
+
+```json
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/.*",
+      "headers": { "Cache-Control": "max-age=3600" },
+      "continue": true
+    },
+    {
+      "src": "/blog.*",
+      "headers": { "Cache-Control": "max-age=600" },
+      "continue": true
+    },
+    { "src": "/blog/([^/]+)", "dest": "/post?slug=$1" }
+  ]
+}
+```
+
+In this example, `/test` would be cached for `3600`, `/blog/whatever` would be cached for `600`. It's important to note when using `continue` and headers, if a header is already set, it is overridden.
+
+#### `dest` and `continue`
+
+When you need to rewrite the URL without matching, you should use `continue`
+
+````json
+    {
+      "version": 2,
+      "routes": [
+        { "src": "/test", "headers": { "Cache-Control": "max-age: 600" }, "continue": true },
+        { "src": "/(.*)", "dest": "/src/public/$1", "continue": true },
+        { "src": "/src/public/test", "dest": "/src/function/test" }
+      ]
+    }
+    ```
+
+When requesting `/test`, it will look for a response at `/src/public/test`. Any routes that follow the `dest` + `continue` route will match against the new path. For example, `/test` would match all 3 routes.
+
+### Common Regex
+
+When using the `.` character, you should keep in mind in regex, it matches anything. A literal `.` is denoted `\\.`. Slashes do not need to be escaped because the regular expression is enclosed in quotes.
+
+Incorrect:
+
+```json
+    { "src": "\\/test\\/file.json", "status": 404, "dest": "/404" }
+````
+
+Considering this example, `/test/file.json` would match, but `/test/file-json` would too. This is not intended. The `\\/` slashes are distracting and needless.
+
+Correct:
+
+```json
+{ "src": "/test/file\\.json", "status": 404, "dest": "/404" }
+```
+
+### Catch all except
+
+A common pattern for URL slugs is catch-all except:
+
+```json
+{ "src": "/blog/([^/]+)", "dest": "/blog?post=$1" }
+```
+
+Anything that isn't a slash will match in `$1`. This allows `/blog/post` to work, while not allowing `/blog/post/edit`.
+
+# Negative Lookahead
+
+When using catch-alls, it might make sense to exclude certain patterns instead of just a character. A negative lookahead might be useful with a directory structure similar to this:
+
+```
+project/
+  blog/
+    index.html
+    post.html
+  www/
+    index.html
+    about.html
+```
+
+In order to make `/` use `www/index.html`, we have to create a route:
+
+```json
+{
+  "version": 2,
+  "routes": [{ "src": "/(?!blog/?)(.*)", "dest": "/www/$1", "continue": true }]
+}
+```
+
+`(?!blog/?)` is a negative lookahead and ensures the route doesn't start with `/blog/`.
 
 ## Limits
 
