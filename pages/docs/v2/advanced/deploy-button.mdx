@@ -12,16 +12,22 @@ export const meta = {
   description:
     'The Deploy Button can be used to deploy GitHub repositories to ZEIT Now.',
   editUrl: 'pages/docs/v2/advanced/deploy-button.mdx',
-  lastEdited: '2019-09-09T17:54:46.000Z'
+  lastEdited: '2019-09-11T14:00:42.000Z'
 }
 
-The Deploy Button can be used to deploy any GitHub repository to ZEIT Now, creating a project for the user and optionally a Git repository.
+Use the deploy button to create a ZEIT Project from any GitHub repository, and optionally create a copy of the original repository in your Git account.
+
+## Example
+
+The example below shows how the deploy button looks when rendered, clicking it allows you to deploy the [Gatsby example](https://github.com/zeit/now-examples/tree/master/gatsby) from the [Now Examples repository](https://github.com/zeit/now-examples).
+
+[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/zeit/now-examples/tree/master/gatsby)
 
 ## Usage
 
-You can add the Deploy Button **anywhere that will render an `.svg` image**.
+Consisting of an `.svg` asset and an associated link to a public GitHub repository, the deploy button can be used wherever its rendering is supported.
 
-When implementing the Deploy Button, provide a link with it to the `/new/project` endpoint and pass a GitHub repository as the template query parameter like so:
+When implementing the deploy button, provide a link with it to the /new/project endpoint and pass a GitHub repository as the template query parameter like so:
 
 <Snippet dark text="https://zeit.co/new/project?template=https://github.com/zeit/now-examples/tree/master/gatsby" />
 <Caption>The URL for deploying GitHub repositories to ZEIT Now.</Caption>
@@ -32,10 +38,10 @@ By combining both the button and the `/new/project` endpoint, you can provide us
 
 ### Markdown
 
-To render the Deploy button in a [Markdown](https://en.wikipedia.org/wiki/Markdown) file, for example a Git `README.md`, use the following code, changing only the template parameter:
+To render the deploy button in a [Markdown](https://en.wikipedia.org/wiki/Markdown) file, for example a Git `README.md`, use the following code, changing only the template parameter:
 
 <Snippet dark text="[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/zeit/now-examples/tree/master/gatsby)" />
-<Caption>The code required to add a Deploy Button in Markdown.</Caption>
+<Caption>The code required to add a deploy button in Markdown.</Caption>
 
 ### HTML
 
@@ -49,9 +55,7 @@ To use the Deploy to Now button with HTML, add the button as an image and wrap i
 </a>
 ```
 
-<Caption>
-  The code required to add a Deploy to Now Button to a website or app.
-</Caption>
+<Caption>The code required to add a deploy button to a website or app.</Caption>
 
 export default ({ children }) => <Doc meta={meta}>{children}</Doc>
 
