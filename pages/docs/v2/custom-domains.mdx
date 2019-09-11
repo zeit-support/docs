@@ -5,109 +5,111 @@ import Snippet from '~/components/snippet'
 import Caption from '~/components/text/caption'
 import Note from '~/components/text/note'
 import Card from '~/components/card'
+import { Image } from '~/components/media'
 
 export const meta = {
   title: 'Custom Domains',
   description: 'How to add and use a custom domain with your project.',
   editUrl: 'pages/docs/v2/custom-domains.mdx',
-  lastEdited: '2019-08-27T14:52:10.000Z'
+  lastEdited: '2019-09-10T15:27:08.000Z'
 }
 
-All deployments are assigned a `.now.sh` prefixed domain. You can use a custom domain with your projects, whether that is a ZEIT domain or an external domain registered with a third-party. This document will explain how to add a domain to ZEIT Now, and how to use it with your deployments.
+By default, all deployments are assigned a `.now.sh` prefixed domain.
+
+This domain can be replaced with a **Custom Domain** of your choice. This Custom Domain can be purchased with ZEIT or a third-party.
+
+In this document, adding a domain to your ZEIT Now projects is explained in detail.
 
 ## Adding a Domain
 
-### Option 1: Using ZEIT Nameservers
+If you don't own a domain yet, you can [purchase it with ZEIT](https://zeit.co/domains). Then, once you own a domain, adding it to a project is very straightforward:
 
-Using the ZEIT DNS nameservers is the preferred way of verifying and pointing your domain towards ZEIT Now.
+### Step 1: Selecting Your Project
 
-There are several benefits:
+On the [dashboard](https://zeit.co/dashboard), pick the project to which you would like to assign your domain:
 
-- You can easily deploy to custom domains with [Now CLI](/download)
-- It allows us to generate DNS records automatically that help with managing your domain
-- You can generate wildcard certificates automatically
-- Your domain will be served by our lightning fast [Smart CDN](/smart-cdn)
-- You get an SSL certificate as standard which we renew for you
+<Image
+  src={`${process.env.ASSETS}/docs/custom-domains/select-project.png`}
+  width={1080 / 2}
+  height={320 / 2}
+  shadow
+/>
+<Caption>Selecting the project from the ZEIT Dashboard.</Caption>
 
-Using this method means that you will be using ZEIT DNS and your domain will be marked as a ZEIT DNS or [zeit.world](/dns) domain.
+### Step 2: Navigating to Domain Settings
 
-To add a domain with ZEIT, use the `now domains add` command:
+Once you have selected the project of your choice, click on the **Domains** item in the menubar:
 
-<Snippet dark text="now domains add <domain>" />
+<Image
+  src={`${process.env.ASSETS}/docs/custom-domains/select-domains.png`}
+  width={728 / 2}
+  height={274 / 2}
+  shadow
+/>
+<Caption>Selecting the <b>Domains</b> tab from the Project Overview page.</Caption>
 
-[Now CLI](/download) will give you an intended set of nameservers that can be set with your domain name provider to point to ZEIT DNS so that you can access your deployments from that domain. The nameservers you are provided with are randomly given to enhance [stability and security](#stability-and-security) when setting up your domain.
+### Step 3: Entering Your Chosen Domain
 
-<Note>
-  To migrate with no downtime, follow our{' '}
-  <GenericLink href="/guides/zero-downtime-domain-migration/">
-    Zero-Downtime Migration to ZEIT DNS Guide
-  </GenericLink>
-  .
+From the **Project Domains** page, enter the domain you wish to add to the project:
+
+<Image
+  src={`${process.env.ASSETS}/docs/custom-domains/enter-domain.png`}
+  width={1483 / 2}
+  height={506 / 2}
+  shadow
+/>
+<Caption>Entering a domain for the project from the Project Domains page.</Caption>
+
+### Step 4: Verifying the Domain
+
+Once the domain has added, you will be presented with two methods for verifying it, either through **Nameservers** or **CNAME**.
+
+<Image
+  src={`${process.env.ASSETS}/docs/custom-domains/verify-domain.png`}
+  width={1400 / 2}
+  height={902 / 2}
+  shadow
+/>
+<Caption>Instructions on verifying the domain from the Project Domains page.</Caption>
+
+### Step 5: Domain Verified
+
+Once the domain has been verified, the card status will change to reflect this.
+
+<Image
+  src={`${process.env.ASSETS}/docs/custom-domains/verified-domain.png`}
+  width={1400 / 2}
+  height={234 / 2}
+  shadow
+/>
+<Caption>A verified domain on the Project Domains page.</Caption>
+
+## Wildcard Domains
+
+You can use your custom domain as a Wildcard Domain by prefixing it with `*.`.
+
+<Note type="warning">
+  If using your custom domain as a Wildcard Domain, you{' '}
+  <b>must use the nameservers method for verification</b>.
 </Note>
 
-ZEIT Now will automatically check that the nameservers have been updated, and when detected, the domain will be marked as verified. You can force Now to check for verification by using the `now domains verify` command:
+To add a Wildcard Domain, follow the steps to [add a domain](#step-1:-selecting-your-project), the only change being; at [step 3](#step-3:-entering-your-chosen-domain), where you should instead use the prefix mentioned above, for example; `*.acme.com`.
 
-<Snippet dark text="now domains verify <domain>" />
+<Image
+  src={`${process.env.ASSETS}/docs/custom-domains/wildcard-domains.png`}
+  width={1400 / 2}
+  height={836 / 2}
+  shadow
+/>
+<Caption>A <b>Wildcard Domain</b> awaiting verification.</Caption>
 
-That's it! You're ready to [point your deployments to your domain(s)](/docs/v2/custom-domains#deploying-with-your-domain) and [create DNS records](/docs/v2/advanced/domains/dns). Your wildcard certificate is created automatically.
-
-### Option 2: Using External Nameservers
-
-If you prefer to use other nameservers, you can verify your domain using `TXT` verification and add `CNAME` records with the value `alias.zeit.co` for the hostnames you want to use within Now. This means that you will not be using ZEIT DNS and your domain will be marked as external.
-
-<Note warning>
-  If your DNS does not support <InlineCode>CNAME</InlineCode>,{' '}
-  <InlineCode>ALIAS</InlineCode>, and DNS flattening, you will not be able to
-  use apex domains with ZEIT.
-</Note>
-
-For a greater advantage with ZEIT Now and your domain, we strongly recommend using the [ZEIT nameservers method](#option-1:-using-zeit-nameservers).
-
-To use a domain with external nameservers with Now, first add it to your account using the `now domains add` command:
-
-<Snippet dark text="now domains add <domain>" />
-
-For this purpose, can ignore the set of nameservers, and instead take note of the `TXT` record including a `name` (also known as `host` or `alias`) and a `value`. Adding this record with your existing domain provider will allow ZEIT Now to verify that the domain belongs to you and enable you to use the domain with Now.
-
-Now will automatically check for the `TXT` record, and when detected, the domain will be marked as verified.
-
-You can force Now to check for verification by using the `now domains verify` command:
-
-<Snippet dark text="now domains verify <domain>>" />
-
-This method is recommended when you want a [zero-downtime migration](/guides/zero-downtime-domain-migration/) before [pointing your domain to ZEIT Now](#step-2:-pointing-to-now).
-
-For each domain you want to use, add a `CNAME` record with a value `alias.zeit.co` to your external DNS. Then you can [use your deployments with your custom domains](/docs/v2/custom-domains#deploying-with-your-domain) as usual!
-
-#### Moving to ZEIT Nameservers
-
-If you decide later that you want to migrate to ZEIT nameservers (including as part of a [zero-downtime migration](/guides/zero-downtime-domain-migration/), you can find the intended set of nameservers for your domain by running the inspect command:
-
-<Snippet dark text="now domains inspect <domain>" />
-
-This command will print your current and intended nameservers.
-
-Once you change the nameservers with your domain provider and the domain propagates, your domain will point to ZEIT Now and you can access your deployments from that domain.
+After the verification process is complete, the status of the domain will be updated within the UI to confirm that it is ready for use.
 
 ## Deploying with Your Domain
 
-To use your custom domain, add it through the **Domains** section of your Project Overview.
+Once the domain has been added to your project and verified, it is **automatically applied to your latest deployment**.
 
-<Note hint>
-  A project is defined when first deploying (by default; using the directory
-  name), or when creating a project from your dashboard. You can read more about
-  them in the{' '}
-  <GenericLink href="/docs/v2/advanced/platform/projects/">
-    projects documentation
-  </GenericLink>
-  .
-</Note>
-
-Select a project from your dashboard and click the **Domains** tab. Add your custom domain for production here, such as `[custom domain name].[tld]`, a subdomain `[subdomain].[custom domain name].[tld]` (providing the root domain is added to your account), or using the free `now.sh` deployment suffix `[name].now.sh`.
-
-If the domain you add is **registered to your account and available for use** (which will be indicated in the UI) you can continue. Otherwise, if the domain is **not registered to your account**, it will automatically be added and we will attempt to verify it for you.
-
-Once the domain has been added, you will be presented with information on how to use it. Read on, here, to learn more about how to use it.
+If you want to update your production deployment, there are two options available, [using Now CLI](#using-now-cli) or [with Git](#with-git).
 
 <Note>
   The first successful deployment of a new project will be marked as production
@@ -117,34 +119,38 @@ Once the domain has been added, you will be presented with information on how to
 
 ### Using Now CLI
 
-With a custom domain defined; you can go on to use it with your deployments.
-
-When you're ready to deploy your project to production, you can use the `--prod` argument from [Now CLI](/download) in your terminal:
+To update your production deployment, you can use the `--prod` argument with the [`now` command](/docs/now-cli/#commands/now) in your terminal:
 
 <Snippet dark text="now --prod" />
 <Caption>Deploying a project to production.</Caption>
 
 ### With Git
 
-When a custom domain is assigned as a production domain to a project that is connected to a GitHub repository or GitLab project with a [Now for Git integration](/docs/v2/git-integration) enabled, each push (including merges) to the default branch (commonly `master`) will trigger a deployment that targets the defined domain.
+When a custom domain is assigned as a production domain to a project with a [Now for Git integration](/docs/v2/git-integration) enabled, each push (including merges) to the default branch (commonly `master`) will trigger a deployment that targets the defined domain.
 
-Additionally, reverts will automatically and immediately assign to the domain so that if you have a bug, you do not have to wait for it to be deployed.
+Reverts take effect immediately, assigning the custom domain to the deployment made prior to the point the revert is effective from.
 
 ## Removing a Domain
 
-With the following command you can remove a domain that is assigned to your ZEIT account or team:
+To remove a domain that is assigned to your ZEIT account or team, navigate to the **Domains** tab from the Project Overview and click the **Remove** button for the domain you want to remove:
 
-<Snippet dark text="now domains rm <domain>" />
+<Image
+  src={`${process.env.ASSETS}/docs/custom-domains/verified-domain.png`}
+  width={1400 / 2}
+  height={234 / 2}
+  shadow
+/>
+<Caption>A verified domain on the Project Domains page with the option to remove.</Caption>
 
 ## Related
 
-For more information on what to do next, we recommend the following articles:
+For more information on what to do next, we recommend the following article:
 
 <Card
   title="Serverless Functions"
   href="/docs/v2/serverless-functions/introduction"
 >
-  Extend the capabilities of your project by adding serverless functions to it.
+  Extend the capabilities of your project by adding Serverless Functions to it.
 </Card>
 
 export default ({ children }) => <Doc meta={meta}>{children}</Doc>
