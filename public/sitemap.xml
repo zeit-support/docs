@@ -651,6 +651,11 @@
     <changefreq>hourly</changefreq>
   </url>
   <url>
+    <loc>https://zeit.co/guides/deploying-react-forms-using-formspree-with-zeit-now/</loc>
+    <lastmod>2019-09-12T09:25:42.000Z</lastmod>
+    <changefreq>hourly</changefreq>
+  </url>
+  <url>
     <loc>https://zeit.co/guides/deploying-react-with-now-cra/</loc>
     <lastmod>2019-08-30T09:17:58.000Z</lastmod>
     <changefreq>hourly</changefreq>
