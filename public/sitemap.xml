@@ -441,7 +441,7 @@
   </url>
   <url>
     <loc>https://zeit.co/docs/v2/custom-domains/</loc>
-    <lastmod>2019-08-27T14:52:10.000Z</lastmod>
+    <lastmod>2019-09-10T14:30:11.000Z</lastmod>
     <changefreq>hourly</changefreq>
   </url>
   <url>
@@ -643,6 +643,11 @@
   <url>
     <loc>https://zeit.co/guides/deploying-pusher-channels-with-zeit-now/</loc>
     <lastmod>2019-08-30T09:17:58.000Z</lastmod>
+    <changefreq>hourly</changefreq>
+  </url>
+  <url>
+    <loc>https://zeit.co/guides/deploying-react-forms-using-formspree-with-zeit-now/</loc>
+    <lastmod>2019-09-12T09:25:42.000Z</lastmod>
     <changefreq>hourly</changefreq>
   </url>
   <url>
