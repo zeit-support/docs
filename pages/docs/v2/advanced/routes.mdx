@@ -10,7 +10,7 @@ export const meta = {
   description:
     'Create proxies, redirects, cache-control headers, and more with ZEIT Now routes, easily.',
   editUrl: 'pages/docs/v2/advanced/routes.mdx',
-  lastEdited: '2019-09-09T21:08:11.000Z'
+  lastEdited: '2019-09-13T13:27:03.000Z'
 }
 
 ZEIT Now uses routes to define the behavior of how a request is handled on the routing side. For example, you might use a route to proxy a URL to another, redirect a client, or apply a header with the response to a request.
@@ -376,9 +376,11 @@ In this example, handle filesystem expands to route `/about` and `/contact`.
 
 ## Advanced Routing
 
-### Basic 404
+This section is intended to cover a number of advanced uses for routes, providing examples that can be adapted for use in your project.
 
-The `routes` array is usually processed before attempting a match. For example, this allows us to send a 404 for specific route patterns:
+### Custom 404
+
+The `routes` array is processed before attempting a match. For example, this allows us to send a `404` status code for specific route patterns:
 
 ```json
 {
@@ -387,7 +389,15 @@ The `routes` array is usually processed before attempting a match. For example, 
 }
 ```
 
-This would return a 404 for `/build/stats`. An advanced usage of this pattern can be:
+<Caption>
+  A <InlineCode>now.json</InlineCode> file, setting a{' '}
+  <InlineCode>404</InlineCode> status code for the{' '}
+  <InlineCode>/build/stats</InlineCode> route.
+</Caption>
+
+This would return a `404` status code for the `/build/stats` route.
+
+To provide a custom 404 route, you can rely on the filesystem, providing a custom error page if there are no matches. The code below shows an example of how to do this:
 
 ```json
 {
@@ -399,11 +409,17 @@ This would return a 404 for `/build/stats`. An advanced usage of this pattern ca
 }
 ```
 
-In the snippet above we give precedence to our files in the filesystem - which you can see by appending /\_src to your deployment URL.
+<Caption>
+  A <InlineCode>now.json</InlineCode> file, setting a{' '}
+  <InlineCode>404</InlineCode> status code for any routes not matched in the
+  filesystem.
+</Caption>
 
-### Fallback to `index.html`
+In the snippet above, precedence is given to the filesystem, routing only to `/404` if there is no match.
 
-A common pattern with single-page applications is routing everything to a single file and the browser parses the path. Most SPAs have assets to serve as well, so we should handle the filesystem before rewriting the path:
+### SPA Fallback
+
+A common pattern with single-page applications is routing everything to a single file with the browser parsing the path. Most SPAs have assets to serve as well, so you should handle the filesystem before rewriting the path:
 
 ```json
 {
@@ -415,11 +431,19 @@ A common pattern with single-page applications is routing everything to a single
 }
 ```
 
-It's important to note that serverless functions are also handled in the filesystem.
+<Caption>
+  A <InlineCode>now.json</InlineCode> file, providing a fallback to{' '}
+  <InlineCode>index.html</InlineCode> after checking for matches against
+  filesystem routes.
+</Caption>
 
-### Intercept routes after and before the filesystem
+In the example above, routing will take place based on the filesystem first, allowing for correct routing of assets and Serverless Functions, before falling back to the `index.html` file.
 
-Say the directory structure of a user's project looks like this:
+### Intercepting Routes
+
+Routes can be intercepted by placing them either before or after `"handle": "filesystem"`, this can be used to change the behavior of how your routes work.
+
+For example, say the directory structure of a user's project looks like this:
 
 ```
 project/
@@ -429,7 +453,9 @@ project/
   index.html
 ```
 
-If we want to create a route that doesn't interfere with the other files in the filesystem, we should add `{ "handle": "filesystem" }` before:
+<Caption>An example project directory structure.</Caption>
+
+If you want to create a route that **does not interfere with the other files in the filesystem**, you should add `"handle": "filesystem"` before:
 
 ```json
 {
@@ -441,44 +467,64 @@ If we want to create a route that doesn't interfere with the other files in the 
 }
 ```
 
-This is the equivalent of writing except when you add a new file, you don't need to change any config:
+<Caption>
+  A <InlineCode>now.json</InlineCode> file, providing a{' '}
+  <InlineCode>/blog</InlineCode> route after checking for matches against
+  filesystem routes.
+</Caption>
+
+This is the equivalent of writing the routes below except when you add a new file, you don't need to change any config:
 
 ```json
 {
   "version": 2,
   "routes": [
-    { "src": "/about\\.html", "dest": "/about.html" },
-    { "src": "/index\\.html", "dest": "/index.html" },
-    { "src": "/contact\\.html", "dest": "/contact.html" },
-    { "src": "/secret\\.html", "dest": "/secret.html" },
+    { "src": "/about.html", "dest": "/about.html" },
+    { "src": "/index.html", "dest": "/index.html" },
+    { "src": "/contact.html", "dest": "/contact.html" },
+    { "src": "/secret.html", "dest": "/secret.html" },
     { "src": "/(?<slug>[^/]+)", "dest": "/blog?slug=$slug" }
   ]
 }
 ```
 
-If you want to append headers to block some of those paths, you need a route that comes before handle filesystem:
+<Caption>
+  A <InlineCode>now.json</InlineCode> file, expanded to show the effect of using
+  the filesystem to handle routing.
+</Caption>
+
+If you want to append headers to **block some of those paths**, you need a route that comes before `"handle": "filesystem"`:
 
 ```json
 {
   "version": 2,
   "routes": [
     {
-      "src": "/about\\.html",
+      "src": "/about.html",
       "headers": { "Cache-Control": "max-age=600" },
       "continue": true
     },
-    { "src": "/secret\\.html", "status": 404, "dest": "/404" },
+    { "src": "/secret.html", "status": 404, "dest": "/404" },
     { "handle": "filesystem" },
     { "src": "/(?<slug>[^/]+)", "dest": "/blog?slug=$slug" }
   ]
 }
 ```
 
-### `continue` usage
+<Caption>
+  A <InlineCode>now.json</InlineCode> file that will continue matching routes
+  after <InlineCode>/about.html</InlineCode> is matched.
+</Caption>
+
+By using `"continue": true`, routes will continue to be matched, rather than stopping at the first match.
+
+### Using `continue`
 
 There are some cases where you might want to continue routing after making a match. This is useful when scoping URLs or appending headers.
 
 #### Global Headers with `continue`
+
+A common usage for `"continue": true` is to add global headers to routes, this is shown in the example:
 
 ```json
 {
@@ -499,34 +545,52 @@ There are some cases where you might want to continue routing after making a mat
 }
 ```
 
+<Caption>
+  A <InlineCode>now.json</InlineCode> file using{' '}
+  <InlineCode>continue</InlineCode> to add global headers.
+</Caption>
+
 In this example, `/test` would be cached for `3600`, `/blog/whatever` would be cached for `600`. It's important to note when using `continue` and headers, if a header is already set, it is overridden.
 
 #### `dest` and `continue`
 
-When you need to rewrite the URL without matching, you should use `continue`
+When you need to rewrite the URL without matching, you should use `"continue": true`.
 
-````json
+```json
+{
+  "version": 2,
+  "routes": [
     {
-      "version": 2,
-      "routes": [
-        { "src": "/test", "headers": { "Cache-Control": "max-age: 600" }, "continue": true },
-        { "src": "/(.*)", "dest": "/src/public/$1", "continue": true },
-        { "src": "/src/public/test", "dest": "/src/function/test" }
-      ]
-    }
-    ```
+      "src": "/test",
+      "headers": { "Cache-Control": "max-age: 600" },
+      "continue": true
+    },
+    { "src": "/(.*)", "dest": "/src/public/$1", "continue": true },
+    { "src": "/src/public/test", "dest": "/src/function/test" }
+  ]
+}
+```
 
-When requesting `/test`, it will look for a response at `/src/public/test`. Any routes that follow the `dest` + `continue` route will match against the new path. For example, `/test` would match all 3 routes.
+<Caption>
+  A <InlineCode>now.json</InlineCode> file using{' '}
+  <InlineCode>continue</InlineCode> to rewrite a URL without matching.
+</Caption>
+
+In this example, when requesting `/test`, it will look for a response at `/src/public/test`. Any routes that follow the `dest` + `continue` route will match against the new path. For example, `/test` would match all 3 routes.
 
 ### Common Regex
 
-When using the `.` character, you should keep in mind in regex, it matches anything. A literal `.` is denoted `\\.`. Slashes do not need to be escaped because the regular expression is enclosed in quotes.
+When using the `.` character, you should keep in mind that in regex, it matches anything. A literal `.` is denoted `\\.`. Slashes do not need to be escaped because the regular expression is enclosed in quotes.
 
 Incorrect:
 
 ```json
-    { "src": "\\/test\\/file.json", "status": 404, "dest": "/404" }
-````
+{ "src": "\\/test\\/file.json", "status": 404, "dest": "/404" }
+```
+
+<Caption>
+  An incorrect example of a <InlineCode>now.json</InlineCode> route.
+</Caption>
 
 Considering this example, `/test/file.json` would match, but `/test/file-json` would too. This is not intended. The `\\/` slashes are distracting and needless.
 
@@ -536,7 +600,11 @@ Correct:
 { "src": "/test/file\\.json", "status": 404, "dest": "/404" }
 ```
 
-### Catch all except
+<Caption>
+  A correct example of a <InlineCode>now.json</InlineCode> route.
+</Caption>
+
+### Catch All Except
 
 A common pattern for URL slugs is catch-all except:
 
@@ -544,9 +612,13 @@ A common pattern for URL slugs is catch-all except:
 { "src": "/blog/([^/]+)", "dest": "/blog?post=$1" }
 ```
 
-Anything that isn't a slash will match in `$1`. This allows `/blog/post` to work, while not allowing `/blog/post/edit`.
+<Caption>
+  A <InlineCode>now.json</InlineCode> route using a catch-all except regex.
+</Caption>
 
-# Negative Lookahead
+Anything that is not a `/` will match in `$1`. This allows `/blog/post` to work, while not allowing `/blog/post/edit`.
+
+### Negative Lookahead
 
 When using catch-alls, it might make sense to exclude certain patterns instead of just a character. A negative lookahead might be useful with a directory structure similar to this:
 
@@ -560,7 +632,9 @@ project/
     about.html
 ```
 
-In order to make `/` use `www/index.html`, we have to create a route:
+<Caption>An example project directory structure.</Caption>
+
+In order to make `/` use `www/index.html`, you have to create a route:
 
 ```json
 {
@@ -568,6 +642,10 @@ In order to make `/` use `www/index.html`, we have to create a route:
   "routes": [{ "src": "/(?!blog/?)(.*)", "dest": "/www/$1", "continue": true }]
 }
 ```
+
+<Caption>
+  A <InlineCode>now.json</InlineCode> route using a negative lookahead.
+</Caption>
 
 `(?!blog/?)` is a negative lookahead and ensures the route doesn't start with `/blog/`.
 
