@@ -173,7 +173,6 @@ export default class GuidesFeedback extends Component {
             position: relative;
             width: 408px;
             margin: 0;
-            overflow: hidden;
             padding: 4px;
           }
 
@@ -185,7 +184,7 @@ export default class GuidesFeedback extends Component {
           }
 
           .feedback :global(.feedback-input textarea) {
-            width: 400px;
+            width: 100%;
             position: relative;
             visibility: ${this.state.success ? 'hidden' : 'visible'};
             transition: all 0.2s ease;

@@ -85,7 +85,7 @@ class FeedbackInput extends Component {
   render() {
     return (
       <main
-        title="Share any feedback this documentation page."
+        title="Share any feedback about this documentation page."
         className={`
           ${this.props.focused ? 'focused' : ''}
           ${this.props.errorMessage != null ? 'error' : ''}
@@ -149,7 +149,7 @@ class FeedbackInput extends Component {
           main {
             position: relative;
             width: 300px;
-            max-width: 90vw;
+            max-width: 86vw;
             height: 120px;
             display: inline-block;
           }
@@ -166,7 +166,7 @@ class FeedbackInput extends Component {
             position: absolute;
             vertical-align: top;
             width: 300px;
-            max-width: 90vw;
+            max-width: 86vw;
             height: 120px;
             top: 10px;
             transition: all 150ms ease-out;
@@ -225,7 +225,7 @@ class FeedbackInput extends Component {
             top: 0;
             z-index: 1001;
             width: 300px;
-            max-width: 90vw;
+            max-width: 86vw;
             font-size: 12px;
             height: 120px;
             line-height: 20px;
