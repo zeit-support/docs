@@ -235,7 +235,7 @@ As an example, you can use this property when you have an API endpoint and only 
 
 ## Cascading Order
 
-Routes are applied in the order they are given in the `routes` array. Take the following configuration, for example:
+Routes are applied in the order they are listed in the `routes` array. Take the following configuration; for example:
 
 ```json
 {
@@ -252,9 +252,9 @@ Routes are applied in the order they are given in the `routes` array. Take the f
   <InlineCode>routes</InlineCode> and proxy them to <InlineCode>/</InlineCode>
 </Caption>
 
-In this configuration, since the first route matches all possible paths, the second route will never be applied. The order of these routes would have to switch for the latter route to apply to the `/first-page` path.
+In the example configuration above, since the first route matches all possible paths, the second route will not be used. The order of these routes would have to switch for the latter route to apply to the `/first-page` path.
 
-The correct configuration for all routes to take affect would be:
+The correct configuration for all routes to take affect would be the following:
 
 ```json
 {
@@ -376,11 +376,11 @@ In this example, handle filesystem expands to route `/about` and `/contact`.
 
 ## Advanced Routing
 
-This section is intended to cover a number of advanced uses for routes, providing examples that can be adapted for use in your project.
+This section intends to cover a number of advanced uses for routes, providing examples that can be adapted for use in your project.
 
 ### Custom 404
 
-The `routes` array is processed before attempting a match. For example, this allows us to send a `404` status code for specific route patterns:
+The `routes` array is processed before attempting a match. For example, this allows you to send a `404` status code for specific route patterns:
 
 ```json
 {
@@ -419,7 +419,7 @@ In the snippet above, precedence is given to the filesystem, routing only to `/4
 
 ### SPA Fallback
 
-A common pattern with single-page applications is routing everything to a single file with the browser parsing the path. Most SPAs have assets to serve as well, so you should handle the filesystem before rewriting the path:
+A common pattern with single-page applications (SPAs) is to route everything towards a single file with the application parsing the path to handle the routing itself. Most SPAs have assets to serve as well, so you should handle the filesystem before rewriting the path:
 
 ```json
 {
@@ -604,7 +604,7 @@ Correct:
   A correct example of a <InlineCode>now.json</InlineCode> route.
 </Caption>
 
-### Catch All Except
+### Catch-All Except
 
 A common pattern for URL slugs is catch-all except:
 
