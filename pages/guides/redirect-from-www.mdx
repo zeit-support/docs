@@ -2,6 +2,7 @@ import Guide from '~/components/layout/guide'
 import Snippet from '~/components/snippet'
 import { InlineCode } from '~/components/text/code'
 import Caption from '~/components/text/caption'
+import Note from '~/components/text/note'
 
 export const meta = {
   title: 'Redirect from www. To Your Root Domain with ZEIT Now',
@@ -11,7 +12,7 @@ export const meta = {
   authors: ['timothy'],
   url: '/guides/redirect-from-www',
   editUrl: 'pages/guides/redirect-from-www.mdx',
-  lastEdited: '2019-08-23T14:21:42.000Z'
+  lastEdited: '2019-09-13T14:50:12.000Z'
 }
 
 Redirecting is useful for a variety of situations, including redirecting a visitor that goes to your domain with `www.` prefixing the URL to [your domain](/docs/v2/custom-domains) without that prefix.
@@ -19,6 +20,11 @@ Redirecting is useful for a variety of situations, including redirecting a visit
 Now provides configuration to help make redirecting easier through [the `routes` property](/docs/v2/advanced/configuration#routes) within a [`now.json` file](/docs/v2/advanced/configuration).
 
 To redirect visitors from the `www.` subdomain to your naked domain, you can create a `now.json` file with the aforementioned configuration property in a new folder to deploy as a separate deployment to the one that is [aliased](/docs/v2/custom-domains#deploying-with-your-domain) to your naked domain.
+
+<Note type="warning">
+  This guide only applies for custom domains and will not work with the{' '}
+  <InlineCode>now.sh</InlineCode> suffix.
+</Note>
 
 ## Step 1: Project Setup
 
