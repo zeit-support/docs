@@ -10,7 +10,7 @@ export const meta = {
   authors: ['unicodeveloper'],
   url: '/guides/deploying-vuepress-to-now',
   editUrl: 'pages/guides/deploying-vuepress-to-now.mdx',
-  lastEdited: '2019-08-30T09:17:58.000Z'
+  lastEdited: '2019-09-17T08:46:12.000Z'
 }
 
 VuePress is a vue-powered static generator. It is used for generating static sites with a focus on writing.
@@ -24,10 +24,12 @@ Already have a VuePress project? [Skip to deploying](#step-3:-deploy-vuepress-wi
 The first step is to create a project and `cd` into it via your terminal.
 
 <Snippet dark text="mkdir vuepress-project && cd vuepress-project" />
+<Caption>Creating and entering into the <InlineCode>vuepress-project</InlineCode> directory.</Caption>
 
-Next, install VuePress as a [local dev dependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file). Use the following command:
+Next, initialize the project and install VuePress as a [local development dependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file). Use the following command:
 
-<Snippet dark text="npm i -D vuepress" />
+<Snippet dark text="npm init -y && npm i -D vuepress" />
+<Caption>Initializing the project and installing VuePress as a development dependency.</Caption>
 
 Once the dependencies are installed, create a `README.md` with the following contents:
 

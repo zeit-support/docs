@@ -15,7 +15,7 @@ export const meta = {
   image:
     'https://og-image.now.sh/**Deploy%20Pusher%20Channels%20Apps**%20with%20ZEIT%20Now.png?theme=light&md=1&fontSize=96px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnow-black.svg&images=https%3A%2F%2Fpusher-icon.now-examples.now.sh&widths=250&widths=300&heights=250&heights=250',
   editUrl: 'pages/guides/deploying-pusher-channels-with-zeit-now.mdx',
-  lastEdited: '2019-08-30T09:17:58.000Z'
+  lastEdited: '2019-09-17T08:46:12.000Z'
 }
 
 [Pusher Channels](https://pusher.com/channels) is a service that makes it easy to add real-time data and functionality to web and mobile apps by using [WebSockets](https://en.wikipedia.org/wiki/WebSocket).
@@ -194,8 +194,8 @@ Next, create a minimal `now.json` file to expose your secrets as environment var
 
 Add the dependencies for the Serverless Function from inside the `/api` directory.
 
-<Snippet dark text="cd api && npm i pusher" />
-<Caption>Entering the <InlineCode>/api</InlineCode> directory and installing the <InlineCode>pusher</InlineCode> dependency.</Caption>
+<Snippet dark text="cd api && npm init -y && npm i pusher" />
+<Caption>Entering the <InlineCode>/api</InlineCode> directory, initializing the <InlineCode>package.json</InlineCode> file and installing the <InlineCode>pusher</InlineCode> dependency.</Caption>
 
 Create a `channels-event.js` file inside the `/api` directory that initializes a new Channels object and receives data from the [`req.body` helper method](https://zeit.co/docs/v2/serverless-functions/supported-languages/#node.js-request-and-response-objects), before invoking [`channels.trigger`](https://github.com/pusher/pusher-http-node#publishing-events) to register the event.
 
